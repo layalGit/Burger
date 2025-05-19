@@ -1,5 +1,6 @@
 import React from 'react';
 import cl from './modal-overlay.module.css';
+import { func } from 'prop-types';
 
 export const ModalOverlay = ({ onClick }) => {
 	const handleClose = (event) => {
@@ -17,4 +18,7 @@ export const ModalOverlay = ({ onClick }) => {
 			onClick={onClick}
 			onKeyDown={handleClose}></div>
 	);
+};
+ModalOverlay.propTypes = {
+	onClick: func.isRequired,
 };

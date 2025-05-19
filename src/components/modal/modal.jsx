@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ModalOverlay } from '@components/modal-overlay/modal-overlay.jsx';
 import cl from './modal.module.css';
+import { func, node, string } from 'prop-types';
 
 export const Modal = ({ title, children, isOpen, onClose }) => {
 	const modalRoot = useRef(document.getElementById('modal-root'));
@@ -36,4 +37,10 @@ export const Modal = ({ title, children, isOpen, onClose }) => {
 				modalRoot.current
 			)
 		: null;
+};
+Modal.propTypes = {
+	title: string.isRequired,
+	children: node.isRequired,
+	isOpen: func.isRequired,
+	onClose: func.isRequired,
 };

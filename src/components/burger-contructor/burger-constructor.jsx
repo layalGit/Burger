@@ -27,35 +27,41 @@ export const BurgerConstructor = ({ ingredients }) => {
 	const OtherIngredients = filterByIngredients(ingredients);
 	return (
 		<section className={`${styles.burger_constructor} mt-25`}>
-			<div className={`${styles.burger_items} custom-scroll mb-10 pr-1`}>
-				{Bun.map((item) => (
-					<ConstructorElement
-						type='top'
-						isLocked={true}
-						text={item.name}
-						price={item.price}
-						thumbnail={item.image}
-					/>
-				))}
-				{OtherIngredients.map((item) => (
-					<div className={styles.burger_list}>
-						<DragIcon type='primary' />
+			<div className={`${styles.burger_items}  mb-10 pr-1`}>
+				<div className='mr-4'>
+					{Bun.map((item) => (
 						<ConstructorElement
-							text={item.name}
+							type='top'
+							isLocked={true}
+							text={`${item.name} (верх)`}
 							price={item.price}
 							thumbnail={item.image}
 						/>
-					</div>
-				))}
-				{Bun.map((item) => (
-					<ConstructorElement
-						type='bottom'
-						isLocked={true}
-						text={item.name}
-						price={item.price}
-						thumbnail={item.image}
-					/>
-				))}
+					))}
+				</div>
+				<div className={`${styles.burger_scroll}  custom-scroll`}>
+					{OtherIngredients.map((item) => (
+						<div className={`${styles.burger_list} pb-4 pr-2`}>
+							<DragIcon type='primary' />
+							<ConstructorElement
+								text={item.name}
+								price={item.price}
+								thumbnail={item.image}
+							/>
+						</div>
+					))}
+				</div>
+				<div className='mr-4'>
+					{Bun.map((item) => (
+						<ConstructorElement
+							type='bottom'
+							isLocked={true}
+							text={`${item.name} (низ)`}
+							price={item.price}
+							thumbnail={item.image}
+						/>
+					))}
+				</div>
 			</div>
 			<div className={styles.order_summary}>
 				<span className={`${styles.order_summary_span} mr-10`}>

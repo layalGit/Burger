@@ -8,14 +8,20 @@ export const App = () => {
 	const UrlApi = 'https://norma.nomoreparties.space/api/ingredients';
 	const [ingredients, setIngredients] = useState([]);
 	useEffect(() => {
-		async function fetchIngredients() {
-			try {
-				const response = await fetch(UrlApi);
-				const data = await response.json();
-				setIngredients(data.data);
-			} catch (error) {
-				console.log(error);
-			}
+		function fetchIngredients() {
+			fetch(UrlApi)
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error(`Ошибка сервера: ${response.status}`);
+					}
+					return response.json();
+				})
+				.then((data) => {
+					setIngredients(data.data);
+				})
+				.catch((error) => {
+					console.error('Ошибка загрузки ингредиентов:', error.message);
+				});
 		}
 
 		fetchIngredients();
