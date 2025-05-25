@@ -1,0 +1,16 @@
+.main {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	color: white;
+	text-align: center;
+	background-color: unset;
+	border: unset;
+}
+
+.text {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+}

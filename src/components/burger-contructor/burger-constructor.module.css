@@ -5,3 +5,35 @@
 	padding-bottom: 20px;
 	color: var(--text-primary-color);
 }
+
+.burger_items {
+	display: flex;
+	flex-direction: column;
+	align-items: end;
+	gap: 16px;
+}
+
+.burger_list {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 16px;
+}
+
+.order_summary {
+	display: flex;
+	flex-direction: row;
+	justify-content: end;
+	align-items: center;
+}
+
+.order_summary_span {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+
+.burger_scroll {
+	max-height: 500px;
+	overflow: hidden scroll;
+}
