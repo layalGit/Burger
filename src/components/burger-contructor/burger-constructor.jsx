@@ -3,7 +3,6 @@ import * as PropTypes from 'prop-types';
 import { ingredientPropType } from '@utils/prop-types.js';
 import {
 	Button,
-	ConstructorElement,
 	CurrencyIcon,
 	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -11,56 +10,35 @@ import { Modal } from '@components/modal/modal.jsx';
 import { useState } from 'react';
 import { OrderDetails } from '@components/order-details/order-details.jsx';
 
-export const BurgerConstructor = ({ ingredients }) => {
-	console.log(ingredients);
+export const BurgerConstructor = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const activeModal = () => {
 		setIsOpen(true);
 	};
 	const onClose = () => setIsOpen(false);
-	const filterByBun = (ingredients) =>
-		ingredients.filter((item) => item.name === 'Краторная булка N-200i');
-	const filterByIngredients = (ingredients) =>
-		ingredients.filter((item) => item.name !== 'Краторная булка N-200i');
 
-	const Bun = filterByBun(ingredients);
-	const OtherIngredients = filterByIngredients(ingredients);
 	return (
 		<section className={`${styles.burger_constructor} mt-25`}>
 			<div className={`${styles.burger_items}  mb-10 pr-1`}>
 				<div className='mr-4'>
-					{Bun.map((item) => (
-						<ConstructorElement
-							type='top'
-							isLocked={true}
-							text={`${item.name} (верх)`}
-							price={item.price}
-							thumbnail={item.image}
-						/>
-					))}
+					<div
+						className={` ${styles.bun} ${styles.bun_top} text text_type_main-default`}>
+						<p>Выберите булку</p>
+					</div>
 				</div>
-				<div className={`${styles.burger_scroll}  custom-scroll`}>
-					{OtherIngredients.map((item) => (
-						<div className={`${styles.burger_list} pb-4 pr-2`}>
-							<DragIcon type='primary' />
-							<ConstructorElement
-								text={item.name}
-								price={item.price}
-								thumbnail={item.image}
-							/>
-						</div>
-					))}
+				<div
+					className={`${styles.burger_scroll} ${styles.burger_list} custom-scroll  pr-2 `}>
+					<DragIcon type='primary' />
+					<div
+						className={` ${styles.bun} ${styles.bun_middle} text text_type_main-default`}>
+						<p>Выберите начинку</p>
+					</div>
 				</div>
 				<div className='mr-4'>
-					{Bun.map((item) => (
-						<ConstructorElement
-							type='bottom'
-							isLocked={true}
-							text={`${item.name} (низ)`}
-							price={item.price}
-							thumbnail={item.image}
-						/>
-					))}
+					<div
+						className={` ${styles.bun} ${styles.bun_bottom} text text_type_main-default`}>
+						<p>Выберите начинку</p>
+					</div>
 				</div>
 			</div>
 			<div className={styles.order_summary}>

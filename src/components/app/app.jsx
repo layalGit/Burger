@@ -1,31 +1,20 @@
-import React, { useEffect, useState } from 'react';
 import styles from './app.module.css';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
 import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
 import { AppHeader } from '@components/app-header/app-header.jsx';
+import { fetchIngredients } from '@/services/slices/ingredients-slice.jsx';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 export const App = () => {
-	const UrlApi = 'https://norma.nomoreparties.space/api/ingredients';
-	const [ingredients, setIngredients] = useState([]);
-	useEffect(() => {
-		function fetchIngredients() {
-			fetch(UrlApi)
-				.then((response) => {
-					if (!response.ok) {
-						throw new Error(`Ошибка сервера: ${response.status}`);
-					}
-					return response.json();
-				})
-				.then((data) => {
-					setIngredients(data.data);
-				})
-				.catch((error) => {
-					console.error('Ошибка загрузки ингредиентов:', error.message);
-				});
-		}
+	const dispatch = useDispatch();
 
-		fetchIngredients();
-	}, []);
+	useEffect(() => {
+		dispatch(fetchIngredients());
+	}, [dispatch]);
+
 	return (
 		<div className={styles.app}>
 			<AppHeader />
@@ -33,10 +22,12 @@ export const App = () => {
 				className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
 				Соберите бургер
 			</h1>
-			<main className={`${styles.main} pl-5 pr-5`}>
-				<BurgerIngredients ingredients={ingredients} />
-				<BurgerConstructor ingredients={ingredients} />
-			</main>
+			<DndProvider backend={HTML5Backend}>
+				<main className={`${styles.main} pl-5 pr-5`}>
+					<BurgerIngredients />
+					<BurgerConstructor />
+				</main>
+			</DndProvider>
 		</div>
 	);
 };
