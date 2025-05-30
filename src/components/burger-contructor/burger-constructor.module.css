@@ -11,6 +11,7 @@
 	flex-direction: column;
 	align-items: end;
 	gap: 16px;
+	max-height: 600px;
 }
 
 .burger_list {
@@ -25,6 +26,14 @@
 	flex-direction: row;
 	justify-content: end;
 	align-items: center;
+}
+
+.burger_element {
+	display: flex;
+	flex-direction: row;
+	justify-content: end;
+	align-items: center;
+	gap: 8px;
 }
 
 .order_summary_span {

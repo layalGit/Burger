@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import styles from './burger-constructor.module.css';
 import * as PropTypes from 'prop-types';
 import { ingredientPropType } from '@utils/prop-types.js';
@@ -8,40 +9,79 @@ import {
 	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Modal } from '@components/modal/modal.jsx';
-import { useState } from 'react';
-import { OrderDetails } from '@components/order-details/order-details.jsx';
 import { useDrop } from 'react-dnd';
+import { useSelector, useDispatch } from 'react-redux';
+import { OrderDetails } from '@components/order-details/order-details.jsx';
+import {
+	addBun,
+	removeBun,
+	addContent,
+	removeContent,
+} from '../../services/slices/ingredients-constructor-slice.jsx';
+import { setOrderNumber } from '@/services/slices/created-order-slice.jsx';
 
 export const BurgerConstructor = () => {
-	const [buns, setBuns] = useState(null); // булки остаются null
-	const [contents, setContents] = useState([]); // начинки начинаются с пустого массива
+	const dispatch = useDispatch();
+
+	const { buns, contents, totalPrice } = useSelector(
+		(state) => state.constructorIngredients
+	);
 
 	const [, dropRef] = useDrop({
-		// обработка приема булок
 		accept: ['bun'],
 		drop: (item) => {
-			setBuns(item);
+			dispatch(addBun(item));
 		},
 	});
 
 	const [, dropContentsRef] = useDrop({
-		// прием начинок
 		accept: ['main', 'sauce'],
 		drop: (item) => {
-			setContents((prev) => [...prev, item]); // добавляем новую начинку в массив
+			dispatch(addContent(item));
 		},
 	});
 
-	const handleClickBun = () => {
-		setBuns(null); // очистим булку при закрытии
-	};
-
 	const [isOpen, setIsOpen] = useState(false);
-	const activeModal = () => {
+	const openOrderModal = () => {
 		setIsOpen(true);
 	};
-	const onClose = () => setIsOpen(false);
+	const closeOrderModal = () => {
+		setIsOpen(false);
+	};
+	const handleSubmitOrder = async () => {
+		try {
+			if (!buns || !contents.length) return alert('Выберите ингредиенты');
 
+			const ingredientsIds = [
+				...new Set([...contents.map((c) => c._id), buns._id]),
+			];
+
+			// Отправляем запрос на создание заказа
+			const response = await fetch(
+				'https://norma.nomoreparties.space/api/orders',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ ingredients: ingredientsIds }),
+				}
+			);
+
+			if (!response.ok) throw new Error(`Ошибка сервера: ${response.status}`);
+
+			const data = await response.json();
+
+			if (data.success && data.order.number) {
+				dispatch(setOrderNumber(data.order.number));
+				openOrderModal();
+			} else {
+				throw new Error('Ошибка оформления заказа');
+			}
+		} catch (err) {
+			alert(err.message);
+		}
+	};
 	return (
 		<section className={`${styles.burger_constructor} mt-25`}>
 			<div className={`${styles.burger_items}  mb-10 pr-1`}>
@@ -52,7 +92,7 @@ export const BurgerConstructor = () => {
 							price={buns.price}
 							thumbnail={buns.image}
 							type='top'
-							handleClose={handleClickBun}
+							handleClose={() => dispatch(removeBun())}
 						/>
 					) : (
 						<div
@@ -69,22 +109,22 @@ export const BurgerConstructor = () => {
 						className={`  ${styles.bun_middle} text text_type_main-default`}>
 						{contents.length > 0 ? (
 							contents.map((content, index) => (
-								<div className={styles.order_summary} key={index}>
+								<div className={styles.burger_element} key={index}>
 									<DragIcon type='primary' />
 									<ConstructorElement
-										key={index}
+										key={content.id}
 										text={content.name}
 										price={content.price}
 										thumbnail={content.image}
 										handleClose={() =>
-											handleClickBun()
-										} /* Эта функция пока общая */
+											dispatch(removeContent({ id: content.id }))
+										}
 									/>
 								</div>
 							))
 						) : (
 							<div
-								className={` ${styles.bun} ${styles.bun_top} text text_type_main-default`}>
+								className={` ${styles.bun} ${styles.bun_middle} text text_type_main-default`}>
 								<p>Выберите начинку</p>
 							</div>
 						)}
@@ -98,7 +138,7 @@ export const BurgerConstructor = () => {
 							price={buns.price}
 							thumbnail={buns.image}
 							type='bottom'
-							handleClose={handleClickBun}
+							handleClose={() => dispatch(removeBun())}
 						/>
 					) : (
 						<div
@@ -111,15 +151,15 @@ export const BurgerConstructor = () => {
 
 			<div className={styles.order_summary}>
 				<span className={`${styles.order_summary_span} mr-10`}>
-					<p className='text text_type_digits-medium'>610</p>
+					<p className='text text_type_digits-medium'>{totalPrice}</p>
 					<CurrencyIcon type='primary' />
 				</span>
-				<Button htmlType='button' type='primary' onClick={activeModal}>
+				<Button htmlType='button' type='primary' onClick={handleSubmitOrder}>
 					Оформить заказ
 				</Button>
 			</div>
 
-			<Modal isOpen={isOpen} onClose={onClose}>
+			<Modal isOpen={isOpen} onClose={closeOrderModal}>
 				<OrderDetails />
 			</Modal>
 		</section>
