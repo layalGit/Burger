@@ -43,7 +43,7 @@
 	justify-content: center;
 	align-items: center;
 	width: 536px;
-	height: 80px;
+	min-height: 80px;
 	background-color: #1c1c21;
 }
 
@@ -52,6 +52,9 @@
 }
 
 .bun_middle {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
 	border-radius: 44px;
 }
 
