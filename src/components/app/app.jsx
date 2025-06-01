@@ -2,11 +2,12 @@ import styles from './app.module.css';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
 import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
 import { AppHeader } from '@components/app-header/app-header.jsx';
-import { fetchIngredients } from '@/services/slices/ingredients-slice.jsx';
+
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { fetchIngredients } from '@/services/actions/ingredientsActions.jsx';
 
 export const App = () => {
 	const dispatch = useDispatch();

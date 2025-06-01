@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './burger-ingredients.module.css';
-import * as PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ingredientPropType } from '@utils/prop-types.js';
 import { IngredientItem } from '@components/burger-ingredients/burger-Item/Ingredient-Item.jsx';
 import { IngredientDetails } from '@components/ingredient-details/ingredient-details.jsx';
 import { Modal } from '@components/modal/modal.jsx';
@@ -159,8 +157,4 @@ export const BurgerIngredients = () => {
 			)}
 		</section>
 	);
-};
-
-BurgerIngredients.propTypes = {
-	ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
 };

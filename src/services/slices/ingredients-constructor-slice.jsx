@@ -5,17 +5,18 @@ const initialState = {
 	buns: null,
 	contents: [],
 	totalPrice: 0,
+	counts: {},
 };
 
 const calculateTotalPrice = (state) => {
-	let price = 0;
+	let totalPrice = 0;
 	if (state.buns) {
-		price += state.buns.price * 2;
+		totalPrice += state.buns.price * state.counts[state.buns._id];
 	}
-	state.contents.forEach((content) => {
-		price += content.price;
-	});
-	return price;
+	for (let ingredient of state.contents) {
+		totalPrice += ingredient.price * state.counts[ingredient._id];
+	}
+	return totalPrice;
 };
 
 const ingredientsConstructorSlice = createSlice({
@@ -23,28 +24,59 @@ const ingredientsConstructorSlice = createSlice({
 	initialState,
 	reducers: {
 		addBun: (state, action) => {
-			state.buns = action.payload;
+			const newBun = action.payload;
+
+			if (state.buns && state.buns._id !== newBun._id) {
+				delete state.counts[state.buns._id];
+			}
+
+			state.buns = newBun;
+			state.counts[newBun._id] = 2;
+
 			state.totalPrice = calculateTotalPrice(state);
 		},
-		removeBun: (state) => {
-			state.buns = null;
-			state.totalPrice = calculateTotalPrice(state);
+
+		addContent: {
+			reducer: (state, action) => {
+				const addedIngredient = action.payload;
+
+				state.counts[addedIngredient._id] =
+					(state.counts[addedIngredient._id] || 0) + 1;
+
+				addedIngredient.uniqueId = uuidv4();
+
+				state.contents.push(addedIngredient);
+				state.totalPrice = calculateTotalPrice(state);
+			},
+			prepare: (ingredient) => ({ payload: ingredient }),
 		},
-		addContent: (state, action) => {
-			const newItem = { ...action.payload, id: uuidv4() };
-			state.contents.push(newItem);
-			state.totalPrice = calculateTotalPrice(state);
-		},
+
 		removeContent: (state, action) => {
-			state.contents = state.contents.filter(
-				(content) => content.id !== action.payload.id
+			const removedUniqueId = action.payload.uniqueId;
+			const indexToRemove = state.contents.findIndex(
+				(item) => item.uniqueId === removedUniqueId
 			);
-			state.totalPrice = calculateTotalPrice(state);
+
+			if (indexToRemove >= 0) {
+				const removedItem = state.contents[indexToRemove];
+
+				state.contents.splice(indexToRemove, 1);
+
+				if (state.counts[removedItem._id]) {
+					state.counts[removedItem._id] -= 1;
+
+					if (state.counts[removedItem._id] <= 0) {
+						delete state.counts[removedItem._id];
+					}
+				}
+
+				state.totalPrice = calculateTotalPrice(state);
+			}
 		},
 	},
 });
 
-export const { addBun, removeBun, addContent, removeContent, moveContent } =
+export const { addBun, addContent, removeContent } =
 	ingredientsConstructorSlice.actions;
 
 export default ingredientsConstructorSlice.reducer;

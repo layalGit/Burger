@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import styles from './burger-constructor.module.css';
-import * as PropTypes from 'prop-types';
-import { ingredientPropType } from '@utils/prop-types.js';
 import {
 	Button,
 	ConstructorElement,
@@ -14,11 +12,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { OrderDetails } from '@components/order-details/order-details.jsx';
 import {
 	addBun,
-	removeBun,
 	addContent,
 	removeContent,
 } from '../../services/slices/ingredients-constructor-slice.jsx';
 import { setOrderNumber } from '@/services/slices/created-order-slice.jsx';
+import { BASE_URL } from '@/config/configAPI.jsx';
+import { checkResponse } from '@utils/checkResponse.jsx';
 
 export const BurgerConstructor = () => {
 	const dispatch = useDispatch();
@@ -55,22 +54,14 @@ export const BurgerConstructor = () => {
 			const ingredientsIds = [
 				...new Set([...contents.map((c) => c._id), buns._id]),
 			];
-
-			// Отправляем запрос на создание заказа
-			const response = await fetch(
-				'https://norma.nomoreparties.space/api/orders',
-				{
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({ ingredients: ingredientsIds }),
-				}
-			);
-
-			if (!response.ok) throw new Error(`Ошибка сервера: ${response.status}`);
-
-			const data = await response.json();
+			const response = await fetch(`${BASE_URL}/orders`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ ingredients: ingredientsIds }),
+			});
+			const data = await checkResponse(response);
 
 			if (data.success && data.order.number) {
 				dispatch(setOrderNumber(data.order.number));
@@ -92,7 +83,7 @@ export const BurgerConstructor = () => {
 							price={buns.price}
 							thumbnail={buns.image}
 							type='top'
-							handleClose={() => dispatch(removeBun())}
+							isLocked={true}
 						/>
 					) : (
 						<div
@@ -117,7 +108,7 @@ export const BurgerConstructor = () => {
 										price={content.price}
 										thumbnail={content.image}
 										handleClose={() =>
-											dispatch(removeContent({ id: content.id }))
+											dispatch(removeContent({ uniqueId: content.uniqueId }))
 										}
 									/>
 								</div>
@@ -138,7 +129,7 @@ export const BurgerConstructor = () => {
 							price={buns.price}
 							thumbnail={buns.image}
 							type='bottom'
-							handleClose={() => dispatch(removeBun())}
+							isLocked={true}
 						/>
 					) : (
 						<div
@@ -148,7 +139,6 @@ export const BurgerConstructor = () => {
 					)}
 				</div>
 			</div>
-
 			<div className={styles.order_summary}>
 				<span className={`${styles.order_summary_span} mr-10`}>
 					<p className='text text_type_digits-medium'>{totalPrice}</p>
@@ -164,8 +154,4 @@ export const BurgerConstructor = () => {
 			</Modal>
 		</section>
 	);
-};
-
-BurgerConstructor.propTypes = {
-	ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
 };

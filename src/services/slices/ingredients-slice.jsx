@@ -1,17 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
-const UrlApi = 'https://norma.nomoreparties.space/api/ingredients';
-
-export const fetchIngredients = createAsyncThunk(
-	'ingredients/getAllIngredients',
-	async () => {
-		const response = await fetch(UrlApi);
-		if (!response.ok) {
-			throw new Error(`Ошибка сервера: ${response.status}`);
-		}
-		return await response.json();
-	}
-);
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchIngredients } from '@/services/actions/ingredientsActions.jsx';
 
 const initialState = {
 	allIngredients: [],
