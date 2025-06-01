@@ -28,14 +28,6 @@
 	align-items: center;
 }
 
-.burger_element {
-	display: flex;
-	flex-direction: row;
-	justify-content: end;
-	align-items: center;
-	gap: 8px;
-}
-
 .order_summary_span {
 	display: flex;
 	align-items: center;

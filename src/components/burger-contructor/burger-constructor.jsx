@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styles from './burger-constructor.module.css';
 import {
 	Button,
 	ConstructorElement,
 	CurrencyIcon,
-	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Modal } from '@components/modal/modal.jsx';
 import { useDrop } from 'react-dnd';
@@ -13,21 +12,21 @@ import { OrderDetails } from '@components/order-details/order-details.jsx';
 import {
 	addBun,
 	addContent,
-	removeContent,
+	updateIngredientsOrder,
 } from '../../services/slices/ingredients-constructor-slice.jsx';
 import { setOrderNumber } from '@/services/slices/created-order-slice.jsx';
 import { BASE_URL } from '@/config/configAPI.jsx';
 import { checkResponse } from '@utils/checkResponse.jsx';
+import { DraggableItem } from '@components/burger-contructor/draggble-item/draggble-item.jsx';
 
 export const BurgerConstructor = () => {
 	const dispatch = useDispatch();
-
 	const { buns, contents, totalPrice } = useSelector(
 		(state) => state.constructorIngredients
 	);
 
 	const [, dropRef] = useDrop({
-		accept: ['bun'],
+		accept: 'bun',
 		drop: (item) => {
 			dispatch(addBun(item));
 		},
@@ -41,12 +40,9 @@ export const BurgerConstructor = () => {
 	});
 
 	const [isOpen, setIsOpen] = useState(false);
-	const openOrderModal = () => {
-		setIsOpen(true);
-	};
-	const closeOrderModal = () => {
-		setIsOpen(false);
-	};
+	const openOrderModal = () => setIsOpen(true);
+	const closeOrderModal = () => setIsOpen(false);
+
 	const handleSubmitOrder = async () => {
 		try {
 			if (!buns || !contents.length) return alert('Выберите ингредиенты');
@@ -73,6 +69,14 @@ export const BurgerConstructor = () => {
 			alert(err.message);
 		}
 	};
+
+	const moveContent = useCallback(
+		(dragIndex, hoverIndex) => {
+			dispatch(updateIngredientsOrder({ dragIndex, hoverIndex }));
+		},
+		[dispatch]
+	);
+
 	return (
 		<section className={`${styles.burger_constructor} mt-25`}>
 			<div className={`${styles.burger_items}  mb-10 pr-1`}>
@@ -94,28 +98,22 @@ export const BurgerConstructor = () => {
 				</div>
 
 				<div
-					className={`${styles.burger_scroll} ${styles.burger_list} custom-scroll  pr-2 `}>
+					className={`${styles.burger_scroll} ${styles.burger_list} custom-scroll pr-2`}>
 					<div
 						ref={dropContentsRef}
-						className={`  ${styles.bun_middle} text text_type_main-default`}>
+						className={`${styles.bun_middle} text text_type_main-default`}>
 						{contents.length > 0 ? (
 							contents.map((content, index) => (
-								<div className={styles.burger_element} key={index}>
-									<DragIcon type='primary' />
-									<ConstructorElement
-										key={content.id}
-										text={content.name}
-										price={content.price}
-										thumbnail={content.image}
-										handleClose={() =>
-											dispatch(removeContent({ uniqueId: content.uniqueId }))
-										}
-									/>
-								</div>
+								<DraggableItem
+									content={content}
+									index={index}
+									key={content.uniqueId}
+									moveContent={moveContent}
+								/>
 							))
 						) : (
 							<div
-								className={` ${styles.bun} ${styles.bun_middle} text text_type_main-default`}>
+								className={`${styles.bun} ${styles.bun_middle} text text_type_main-default`}>
 								<p>Выберите начинку</p>
 							</div>
 						)}
@@ -133,7 +131,7 @@ export const BurgerConstructor = () => {
 						/>
 					) : (
 						<div
-							className={` ${styles.bun} ${styles.bun_bottom} text text_type_main-default`}>
+							className={`${styles.bun} ${styles.bun_bottom} text text_type_main-default`}>
 							<p>Выберите булку</p>
 						</div>
 					)}

@@ -42,13 +42,12 @@ const ingredientsConstructorSlice = createSlice({
 
 				state.counts[addedIngredient._id] =
 					(state.counts[addedIngredient._id] || 0) + 1;
-
-				addedIngredient.uniqueId = uuidv4();
-
 				state.contents.push(addedIngredient);
 				state.totalPrice = calculateTotalPrice(state);
 			},
-			prepare: (ingredient) => ({ payload: ingredient }),
+			prepare: (ingredient) => ({
+				payload: { ...ingredient, uniqueId: uuidv4() },
+			}),
 		},
 
 		removeContent: (state, action) => {
@@ -73,10 +72,17 @@ const ingredientsConstructorSlice = createSlice({
 				state.totalPrice = calculateTotalPrice(state);
 			}
 		},
+		updateIngredientsOrder: (state, action) => {
+			const { dragIndex, hoverIndex } = action.payload;
+			const newContents = [...state.contents];
+			const [movedItem] = newContents.splice(dragIndex, 1);
+			newContents.splice(hoverIndex, 0, movedItem);
+			state.contents = newContents;
+		},
 	},
 });
 
-export const { addBun, addContent, removeContent } =
+export const { addBun, updateIngredientsOrder, addContent, removeContent } =
 	ingredientsConstructorSlice.actions;
 
 export default ingredientsConstructorSlice.reducer;

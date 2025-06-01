@@ -1,4 +1,3 @@
-// IngredientItem.jsx
 import React from 'react';
 import cl from './Ingredient-Item.module.css';
 import {
