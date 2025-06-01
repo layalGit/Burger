@@ -14,10 +14,8 @@ import {
 	addContent,
 	updateIngredientsOrder,
 } from '../../services/slices/ingredients-constructor-slice.jsx';
-import { setOrderNumber } from '@/services/slices/created-order-slice.jsx';
-import { BASE_URL } from '@/config/configAPI.jsx';
-import { checkResponse } from '@utils/checkResponse.jsx';
 import { DraggableItem } from '@components/burger-contructor/draggble-item/draggble-item.jsx';
+import { submitOrder } from '@/services/actions/submitActions.jsx';
 
 export const BurgerConstructor = () => {
 	const dispatch = useDispatch();
@@ -44,30 +42,8 @@ export const BurgerConstructor = () => {
 	const closeOrderModal = () => setIsOpen(false);
 
 	const handleSubmitOrder = async () => {
-		try {
-			if (!buns || !contents.length) return alert('Выберите ингредиенты');
-
-			const ingredientsIds = [
-				...new Set([...contents.map((c) => c._id), buns._id]),
-			];
-			const response = await fetch(`${BASE_URL}/orders`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ ingredients: ingredientsIds }),
-			});
-			const data = await checkResponse(response);
-
-			if (data.success && data.order.number) {
-				dispatch(setOrderNumber(data.order.number));
-				openOrderModal();
-			} else {
-				throw new Error('Ошибка оформления заказа');
-			}
-		} catch (err) {
-			alert(err.message);
-		}
+		openOrderModal();
+		dispatch(submitOrder(buns, contents));
 	};
 
 	const moveContent = useCallback(
