@@ -1,36 +1,35 @@
 import React from 'react';
 import cl from './ingredient-details.module.css';
 import { string, number } from 'prop-types';
+import { useSelector } from 'react-redux';
 
-export const IngredientDetails = ({
-	image_large,
-	name,
-	calories,
-	proteins,
-	fat,
-	carbohydrates,
-}) => {
+export const IngredientDetails = () => {
+	const SelectDetails = useSelector((store) => store.selectedIngredients);
 	return (
 		<div className={cl.details_content}>
-			<img className={cl.details_image} src={image_large} alt={name} />
-			<p className='text_type_main-medium'>{name}</p>
+			<img
+				className={cl.details_image}
+				src={SelectDetails.image_large}
+				alt={SelectDetails.name}
+			/>
+			<p className='text_type_main-medium'>{SelectDetails.name}</p>
 			<div
 				className={`${cl.details_description} text_type_main-default  pb-15`}>
 				<div className={cl.details_text}>
 					<p>Калории, ккал</p>
-					<p>{calories}</p>
+					<p>{SelectDetails.calories}</p>
 				</div>
 				<div className={cl.details_text}>
 					<p>Белки, г</p>
-					<p>{proteins}</p>
+					<p>{SelectDetails.proteins}</p>
 				</div>
 				<div className={cl.details_text}>
 					<p>Жиры, г</p>
-					<p>{fat}</p>
+					<p>{SelectDetails.fat}</p>
 				</div>
 				<div className={cl.details_text}>
 					<p>Углеводы, г</p>
-					<p>{carbohydrates}</p>
+					<p>{SelectDetails.carbohydrates}</p>
 				</div>
 			</div>
 		</div>

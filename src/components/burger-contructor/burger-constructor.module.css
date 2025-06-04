@@ -11,6 +11,7 @@
 	flex-direction: column;
 	align-items: end;
 	gap: 16px;
+	max-height: 600px;
 }
 
 .burger_list {
@@ -36,4 +37,28 @@
 .burger_scroll {
 	max-height: 500px;
 	overflow: hidden scroll;
+}
+
+.bun {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 536px;
+	min-height: 80px;
+	background-color: #1c1c21;
+}
+
+.bun_top {
+	border-radius: 88px 88px 44px 44px;
+}
+
+.bun_middle {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	border-radius: 44px;
+}
+
+.bun_bottom {
+	border-radius: 44px 44px 88px 88px;
 }
