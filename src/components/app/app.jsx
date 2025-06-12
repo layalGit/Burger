@@ -1,13 +1,15 @@
-import styles from './app.module.css';
-import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
-import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
-import { AppHeader } from '@components/app-header/app-header.jsx';
-
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+
 import { fetchIngredients } from '@/services/actions/ingredientsActions.jsx';
+import { BrowserRouter, Route, Routes } from 'react-router';
+
+import HomePage from '@pages/homePage.jsx';
+import LoginPage from '@pages/loginPage.jsx';
+import NotFound from '@pages/NotFound.jsx';
+import RegisterPage from '@pages/registerPage.jsx';
+import ForgotPassword from '@pages/forgot-password.jsx';
+import ResetPassword from '@pages/reset-password.jsx';
 
 export const App = () => {
 	const dispatch = useDispatch();
@@ -17,18 +19,15 @@ export const App = () => {
 	}, [dispatch]);
 
 	return (
-		<div className={styles.app}>
-			<AppHeader />
-			<h1
-				className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
-				Соберите бургер
-			</h1>
-			<DndProvider backend={HTML5Backend}>
-				<main className={`${styles.main} pl-5 pr-5`}>
-					<BurgerIngredients />
-					<BurgerConstructor />
-				</main>
-			</DndProvider>
-		</div>
+		<BrowserRouter>
+			<Routes>
+				<Route path='/' element={<HomePage />} />
+				<Route path='/Login' element={<LoginPage />} />
+				<Route path='/Register' element={<RegisterPage />} />
+				<Route path='/ForgotPassword' element={<ForgotPassword />} />
+				<Route path='/ResetPassword' element={<ResetPassword />} />
+				<Route path='*' element={<NotFound />} />
+			</Routes>
+		</BrowserRouter>
 	);
 };
