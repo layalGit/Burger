@@ -1,0 +1,20 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 24px;
+	height: 80vh;
+}
+
+.flexRow {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.flexColumn {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}

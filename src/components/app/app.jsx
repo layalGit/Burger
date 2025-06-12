@@ -10,6 +10,7 @@ import NotFound from '@pages/NotFound.jsx';
 import RegisterPage from '@pages/registerPage.jsx';
 import ForgotPassword from '@pages/forgot-password.jsx';
 import ResetPassword from '@pages/reset-password.jsx';
+import { AppHeader } from '@components/app-header/app-header.jsx';
 
 export const App = () => {
 	const dispatch = useDispatch();
@@ -20,6 +21,7 @@ export const App = () => {
 
 	return (
 		<BrowserRouter>
+			<AppHeader />
 			<Routes>
 				<Route path='/' element={<HomePage />} />
 				<Route path='/Login' element={<LoginPage />} />
