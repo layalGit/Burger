@@ -40,10 +40,10 @@ export const BurgerConstructor = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const openOrderModal = () => setIsOpen(true);
 	const closeOrderModal = () => setIsOpen(false);
-
+	const token = localStorage.getItem('accessToken');
 	const handleSubmitOrder = async () => {
 		openOrderModal();
-		dispatch(submitOrder(buns, contents));
+		dispatch(submitOrder(buns, contents, token));
 	};
 
 	const moveContent = useCallback(

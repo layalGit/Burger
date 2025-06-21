@@ -6,11 +6,17 @@ import {
 	PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { resetPassword } from '@/services/actions/authorizationActions.jsx';
 
 const ResetPassword = () => {
 	const [password, setPassword] = useState('');
 	const [input, setInput] = useState('');
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const handleClick = () => {
+		dispatch(resetPassword({ password: password, token: input }));
+	};
 	const NavigateLogin = () => {
 		navigate('/Login');
 	};
@@ -31,7 +37,7 @@ const ResetPassword = () => {
 				htmlType='button'
 				type='primary'
 				size='medium'
-				onClick={NavigateLogin}>
+				onClick={handleClick}>
 				Сохранить
 			</Button>
 			<div className={cl.flexColumn} style={{ marginTop: '30px' }}>

@@ -5,14 +5,18 @@ import {
 	EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { forgotPassword } from '@/services/actions/authorizationActions.jsx';
 
 const ForgotPassword = () => {
 	const [email, setEmail] = useState('');
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const NavigateLogin = () => {
 		navigate('/Login');
 	};
 	const NavigateResetPassword = () => {
+		dispatch(forgotPassword({ email: email }));
 		navigate('/ResetPassword');
 	};
 	return (
