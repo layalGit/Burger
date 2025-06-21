@@ -6,27 +6,30 @@ import {
 	Input,
 	PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { register } from '@/services/actions/authorizationActions.jsx';
 
 const RegisterPage = () => {
-	const [inputValue, setInputValue] = useState('');
+	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const dispatch = useDispatch();
+	const handleClick = () => {
+		dispatch(register({ email: email, name: name, password: password }));
+	};
 
 	const navigate = useNavigate();
 	const NavigateLogin = () => {
 		navigate('/Login');
-	};
-	const NavigateHome = () => {
-		navigate('/');
 	};
 	return (
 		<div className={cl.container}>
 			<p className='text text_type_main-medium'>Регистрация</p>
 			<Input
 				placeholder={'Имя'}
-				value={inputValue}
-				onChange={(e) => setInputValue(e.target.value)}
+				value={name}
+				onChange={(e) => setName(e.target.value)}
 			/>
 			<EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
 			<PasswordInput
@@ -37,7 +40,7 @@ const RegisterPage = () => {
 				htmlType='button'
 				type='primary'
 				size='medium'
-				onClick={NavigateHome}>
+				onClick={handleClick}>
 				Зарагестрироваться
 			</Button>
 			<div className={cl.flexColumn} style={{ marginTop: '30px' }}>

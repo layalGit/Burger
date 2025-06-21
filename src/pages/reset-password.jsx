@@ -5,7 +5,7 @@ import {
 	Input,
 	PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 const ResetPassword = () => {
 	const [password, setPassword] = useState('');

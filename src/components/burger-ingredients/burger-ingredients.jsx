@@ -2,13 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientItem } from '@components/burger-ingredients/burger-Item/Ingredient-Item.jsx';
-import { IngredientDetails } from '@components/ingredient-details/ingredient-details.jsx';
-import { Modal } from '@components/modal/modal.jsx';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectIngredients } from '@/services/slices/selected-ingredients-slice.jsx';
+import { useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
 
 export const BurgerIngredients = () => {
-	const dispatch = useDispatch();
 	const ingredients = useSelector((store) => store.ingredients.allIngredients);
 	const scrollContainerRef = useRef(null);
 	console.log(ingredients);
@@ -16,7 +13,6 @@ export const BurgerIngredients = () => {
 		ingredients.filter((item) => item.type === type);
 
 	const [activeTab, setActiveTab] = useState('bun');
-	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	function handleScroll() {
 		const sections = document.querySelectorAll('.ingredients-section');
@@ -59,20 +55,11 @@ export const BurgerIngredients = () => {
 		}
 	}, []);
 
-	const openModal = (ingredients) => {
-		dispatch(selectIngredients(ingredients));
-		setIsModalOpen(true);
-	};
-
-	const closeModal = () => {
-		setIsModalOpen(false);
-	};
-
 	const navigateToSection = (sectionId) => {
 		const targetSection = document.getElementById(sectionId);
 		targetSection.scrollIntoView({ behavior: 'smooth' });
 	};
-
+	const location = useLocation();
 	return (
 		<section className={styles.burger_ingredients}>
 			<nav>
@@ -114,11 +101,12 @@ export const BurgerIngredients = () => {
 					<p className='text text_type_main-medium mt-10'>Булки</p>
 					<ul className={styles.ingredients_list}>
 						{filterByType(ingredients, 'bun').map((item) => (
-							<IngredientItem
+							<Link
 								key={item._id}
-								{...item}
-								onClick={() => openModal(item)}
-							/>
+								to={`/ingredients/${item._id}`}
+								state={{ background: location }}>
+								<IngredientItem {...item} />
+							</Link>
 						))}
 					</ul>
 				</div>
@@ -126,11 +114,12 @@ export const BurgerIngredients = () => {
 					<p className='text text_type_main-medium mt-10'>Соусы</p>
 					<ul className={styles.ingredients_list}>
 						{filterByType(ingredients, 'sauce').map((item) => (
-							<IngredientItem
+							<Link
 								key={item._id}
-								{...item}
-								onClick={() => openModal(item)}
-							/>
+								to={`/ingredients/${item._id}`}
+								state={{ background: location }}>
+								<IngredientItem {...item} />
+							</Link>
 						))}
 					</ul>
 				</div>
@@ -138,23 +127,16 @@ export const BurgerIngredients = () => {
 					<p className='text text_type_main-medium mt-10'>Начинки</p>
 					<ul className={styles.ingredients_list}>
 						{filterByType(ingredients, 'main').map((item) => (
-							<IngredientItem
+							<Link
 								key={item._id}
-								{...item}
-								onClick={() => openModal(item)}
-							/>
+								to={`/ingredients/${item._id}`}
+								state={{ background: location }}>
+								<IngredientItem {...item} />
+							</Link>
 						))}
 					</ul>
 				</div>
 			</div>
-			{isModalOpen && (
-				<Modal
-					title='Детали ингредиента'
-					isOpen={isModalOpen}
-					onClose={closeModal}>
-					<IngredientDetails {...selectIngredients} />
-				</Modal>
-			)}
 		</section>
 	);
 };

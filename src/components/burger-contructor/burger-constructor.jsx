@@ -123,9 +123,11 @@ export const BurgerConstructor = () => {
 				</Button>
 			</div>
 
-			<Modal isOpen={isOpen} onClose={closeOrderModal}>
-				<OrderDetails />
-			</Modal>
+			{isOpen && (
+				<Modal onClose={closeOrderModal}>
+					<OrderDetails />
+				</Modal>
+			)}
 		</section>
 	);
 };

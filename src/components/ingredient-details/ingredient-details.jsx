@@ -1,46 +1,44 @@
 import React from 'react';
-import cl from './ingredient-details.module.css';
-import { string, number } from 'prop-types';
 import { useSelector } from 'react-redux';
+import cl from './ingredient-details.module.css';
+import { useParams } from 'react-router-dom';
 
 export const IngredientDetails = () => {
-	const SelectDetails = useSelector((store) => store.selectedIngredients);
+	const { ingredientId } = useParams();
+	const allIngredients = useSelector(
+		(store) => store.ingredients.allIngredients
+	);
+	const ingredient = allIngredients.find((item) => item._id === ingredientId);
+	if (!ingredient) {
+		return <div>Ингредиент не найден</div>;
+	}
+	console.log(ingredient);
 	return (
 		<div className={cl.details_content}>
 			<img
 				className={cl.details_image}
-				src={SelectDetails.image_large}
-				alt={SelectDetails.name}
+				src={ingredient.image_large}
+				alt={ingredient.name}
 			/>
-			<p className='text_type_main-medium'>{SelectDetails.name}</p>
-			<div
-				className={`${cl.details_description} text_type_main-default  pb-15`}>
+			<p className='text_type_main-medium'>{ingredient.name}</p>
+			<div className={`${cl.details_description} text_type_main-default pb-15`}>
 				<div className={cl.details_text}>
 					<p>Калории, ккал</p>
-					<p>{SelectDetails.calories}</p>
+					<p>{ingredient.calories}</p>
 				</div>
 				<div className={cl.details_text}>
 					<p>Белки, г</p>
-					<p>{SelectDetails.proteins}</p>
+					<p>{ingredient.proteins}</p>
 				</div>
 				<div className={cl.details_text}>
 					<p>Жиры, г</p>
-					<p>{SelectDetails.fat}</p>
+					<p>{ingredient.fat}</p>
 				</div>
 				<div className={cl.details_text}>
 					<p>Углеводы, г</p>
-					<p>{SelectDetails.carbohydrates}</p>
+					<p>{ingredient.carbohydrates}</p>
 				</div>
 			</div>
 		</div>
 	);
-};
-
-IngredientDetails.propTypes = {
-	image_large: string.isRequired,
-	name: string.isRequired,
-	calories: number.isRequired,
-	proteins: number.isRequired,
-	fat: number.isRequired,
-	carbohydrates: number.isRequired,
 };

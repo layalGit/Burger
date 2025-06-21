@@ -16,5 +16,26 @@
 .flexColumn {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	align-items: center;
+}
+
+.profileFlex {
+	display: flex;
+	align-items: center;
+	gap: 60px;
+}
+
+.profileNav {
+	display: flex;
+	flex-direction: column;
+	max-width: 320px;
+	font-size: 24px;
+	text-align: left;
+}
+
+.profileInput {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
 }

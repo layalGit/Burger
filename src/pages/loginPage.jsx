@@ -5,20 +5,23 @@ import {
 	EmailInput,
 	PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { login } from '@/services/actions/authorizationActions.jsx';
 
 const LoginPage = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const dispatch = useDispatch();
+	const handleClick = () => {
+		dispatch(login({ email: email, password: password }));
+	};
 	const navigate = useNavigate();
 	const NavigateRegister = () => {
 		navigate('/Register');
 	};
 	const NavigateForgotPassword = () => {
 		navigate('/ForgotPassword');
-	};
-	const NavigateHome = () => {
-		navigate('/');
 	};
 	return (
 		<div className={cl.container}>
@@ -32,7 +35,7 @@ const LoginPage = () => {
 				htmlType='button'
 				type='primary'
 				size='medium'
-				onClick={NavigateHome}>
+				onClick={handleClick}>
 				Войти
 			</Button>
 			<div className={cl.flexColumn} style={{ marginTop: '30px' }}>
