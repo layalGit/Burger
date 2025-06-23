@@ -15,7 +15,8 @@ const RegisterPage = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const dispatch = useDispatch();
-	const handleClick = () => {
+	const handleClick = (event) => {
+		event.preventDefault();
 		dispatch(register({ email: email, name: name, password: password }));
 	};
 
@@ -26,23 +27,21 @@ const RegisterPage = () => {
 	return (
 		<div className={cl.container}>
 			<p className='text text_type_main-medium'>Регистрация</p>
-			<Input
-				placeholder={'Имя'}
-				value={name}
-				onChange={(e) => setName(e.target.value)}
-			/>
-			<EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
-			<PasswordInput
-				value={password}
-				onChange={(e) => setPassword(e.target.value)}
-			/>
-			<Button
-				htmlType='button'
-				type='primary'
-				size='medium'
-				onClick={handleClick}>
-				Зарагестрироваться
-			</Button>
+			<form onSubmit={handleClick} className={cl.flexForm}>
+				<Input
+					placeholder={'Имя'}
+					value={name}
+					onChange={(e) => setName(e.target.value)}
+				/>
+				<EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
+				<PasswordInput
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
+				/>
+				<Button htmlType='submit' type='primary' size='medium'>
+					Зарагестрироваться
+				</Button>
+			</form>
 			<div className={cl.flexColumn} style={{ marginTop: '30px' }}>
 				<div className={cl.flexRow}>
 					<p className='text text_type_main-default text_color_inactive'>

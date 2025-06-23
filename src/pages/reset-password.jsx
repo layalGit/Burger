@@ -14,7 +14,8 @@ const ResetPassword = () => {
 	const [input, setInput] = useState('');
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const handleClick = () => {
+	const handleClick = (event) => {
+		event.preventDefault();
 		dispatch(resetPassword({ password: password, token: input }));
 	};
 	const NavigateLogin = () => {
@@ -23,23 +24,21 @@ const ResetPassword = () => {
 	return (
 		<div className={cl.container}>
 			<p className='text text_type_main-medium'>Восстановление пароля</p>
-			<PasswordInput
-				placeholder={'Введите новый пароль'}
-				value={password}
-				onChange={(e) => setPassword(e.target.value)}
-			/>
-			<Input
-				placeholder={'Введите код из письма'}
-				value={input}
-				onChange={(e) => setInput(e.target.value)}
-			/>
-			<Button
-				htmlType='button'
-				type='primary'
-				size='medium'
-				onClick={handleClick}>
-				Сохранить
-			</Button>
+			<form onSubmit={handleClick} className={cl.flexForm}>
+				<PasswordInput
+					placeholder={'Введите новый пароль'}
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
+				/>
+				<Input
+					placeholder={'Введите код из письма'}
+					value={input}
+					onChange={(e) => setInput(e.target.value)}
+				/>
+				<Button htmlType='submit' type='primary' size='medium'>
+					Сохранить
+				</Button>
+			</form>
 			<div className={cl.flexColumn} style={{ marginTop: '30px' }}>
 				<div className={cl.flexRow}>
 					<p className='text text_type_main-default text_color_inactive'>

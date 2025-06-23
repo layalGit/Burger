@@ -13,7 +13,8 @@ const LoginPage = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const dispatch = useDispatch();
-	const handleClick = () => {
+	const handleClick = (event) => {
+		event.preventDefault();
 		dispatch(login({ email: email, password: password }));
 	};
 	const navigate = useNavigate();
@@ -26,18 +27,17 @@ const LoginPage = () => {
 	return (
 		<div className={cl.container}>
 			<p className='text text_type_main-medium'>Вход</p>
-			<EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
-			<PasswordInput
-				value={password}
-				onChange={(e) => setPassword(e.target.value)}
-			/>
-			<Button
-				htmlType='button'
-				type='primary'
-				size='medium'
-				onClick={handleClick}>
-				Войти
-			</Button>
+			<form onSubmit={handleClick} className={cl.flexForm}>
+				<EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
+				<PasswordInput
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
+				/>
+				<Button htmlType='submit' type='primary' size='medium'>
+					Войти
+				</Button>
+			</form>
+
 			<div className={cl.flexColumn} style={{ marginTop: '30px' }}>
 				<div className={cl.flexRow}>
 					<p className='text text_type_main-default text_color_inactive'>

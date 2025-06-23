@@ -26,6 +26,14 @@
 	gap: 60px;
 }
 
+.flexForm {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 30px;
+}
+
 .profileNav {
 	display: flex;
 	flex-direction: column;

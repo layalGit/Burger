@@ -52,22 +52,24 @@ const ProfilePage = () => {
 					</p>
 				</div>
 				<div className={cl.profileInput}>
-					<Input
-						placeholder={'Имя'}
-						value={inputValue}
-						onChange={(e) => setInputValue(e.currentTarget.value)}
-						icon={'EditIcon'}
-					/>
-					<EmailInput
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-						icon={'EditIcon'}
-					/>
-					<PasswordInput
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-						icon={'EditIcon'}
-					/>
+					<form className={cl.flexForm}>
+						<Input
+							placeholder={'Имя'}
+							value={inputValue}
+							onChange={(e) => setInputValue(e.currentTarget.value)}
+							icon={'EditIcon'}
+						/>
+						<EmailInput
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+							icon={'EditIcon'}
+						/>
+						<PasswordInput
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+							icon={'EditIcon'}
+						/>
+					</form>
 				</div>
 			</div>
 		</div>
