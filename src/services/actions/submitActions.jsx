@@ -1,4 +1,4 @@
-import { BASE_URL } from '@/config/configAPI.jsx';
+import { BASE_URL } from '@/config/configAPI.ts';
 import {
 	setOrderNumber,
 	startLoading,

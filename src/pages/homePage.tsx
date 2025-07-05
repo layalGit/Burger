@@ -1,9 +1,8 @@
-import React from 'react';
 import styles from '@components/app/app.module.css';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
-import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
+import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.tsx';
+import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.tsx';
 
 const HomePage = () => {
 	return (

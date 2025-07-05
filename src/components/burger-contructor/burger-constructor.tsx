@@ -1,26 +1,33 @@
-import React, { useCallback, useState } from 'react';
 import styles from './burger-constructor.module.css';
 import {
 	Button,
 	ConstructorElement,
 	CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Modal } from '@components/modal/modal.jsx';
+import { Modal } from '@components/modal/modal.tsx';
 import { useDrop } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
-import { OrderDetails } from '@components/order-details/order-details.jsx';
+import { OrderDetails } from '../order-details/order-details.tsx';
+
 import {
 	addBun,
 	addContent,
-	updateIngredientsOrder,
+	updateIngredientsOrder, // @ts-expect-error 'ignore'
 } from '../../services/slices/ingredients-constructor-slice.jsx';
-import { DraggableItem } from '@components/burger-contructor/draggble-item/draggble-item.jsx';
+import {
+	DraggableItem,
+	TIngredient,
+} from '@components/burger-contructor/draggble-item/draggble-item.tsx';
+// @ts-expect-error 'ignore'
 import { submitOrder } from '@/services/actions/submitActions.jsx';
-import { OnlyAuth } from '@components/protected-route.jsx';
+import { OnlyAuth } from '@components/protected-route.tsx';
+import { useCallback, useState } from 'react';
 
+type moveContent = (dragIndex: number, hoverIndex: number) => void;
 export const BurgerConstructor = () => {
 	const dispatch = useDispatch();
 	const { buns, contents, totalPrice } = useSelector(
+		// @ts-expect-error 'ignore'
 		(state) => state.constructorIngredients
 	);
 
@@ -47,7 +54,7 @@ export const BurgerConstructor = () => {
 		dispatch(submitOrder(buns, contents, token));
 	};
 
-	const moveContent = useCallback(
+	const moveContent: moveContent = useCallback(
 		(dragIndex, hoverIndex) => {
 			dispatch(updateIngredientsOrder({ dragIndex, hoverIndex }));
 		},
@@ -79,7 +86,7 @@ export const BurgerConstructor = () => {
 						ref={dropContentsRef}
 						className={`${styles.bun_middle} text text_type_main-default`}>
 						{contents.length > 0 ? (
-							contents.map((content, index) => (
+							contents.map((content: TIngredient, index: number) => (
 								<DraggableItem
 									content={content}
 									index={index}

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { BASE_URL } from '@/config/configAPI.jsx';
-import { checkResponse } from '@utils/checkResponse.jsx';
+import { BASE_URL } from '@/config/configAPI.ts';
+import { checkResponse } from '@utils/checkResponse.tsx';
 
 export const fetchIngredients = createAsyncThunk(
 	'ingredients/getAllIngredients',

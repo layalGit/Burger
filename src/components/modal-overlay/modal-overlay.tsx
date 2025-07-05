@@ -1,9 +1,12 @@
-import React from 'react';
 import cl from './modal-overlay.module.css';
-import { func } from 'prop-types';
+import React, { FC } from 'react';
 
-export const ModalOverlay = ({ onClick }) => {
-	const handleClose = (event) => {
+type ModalOverlayProps = {
+	onClick: () => void;
+};
+
+export const ModalOverlay: FC<ModalOverlayProps> = ({ onClick }) => {
+	const handleClose = (event: React.KeyboardEvent<HTMLDivElement>) => {
 		if (event.type === 'keydown' && [' ', 'Escape'].includes(event.key)) {
 			event.preventDefault();
 			onClick();
@@ -13,12 +16,9 @@ export const ModalOverlay = ({ onClick }) => {
 	return (
 		<div
 			className={cl.overlay}
-			tabIndex='0'
+			tabIndex={0}
 			role='button'
 			onClick={onClick}
 			onKeyDown={handleClose}></div>
 	);
-};
-ModalOverlay.propTypes = {
-	onClick: func.isRequired,
 };
