@@ -1,30 +1,38 @@
 import { BASE_URL } from '@/config/configAPI.jsx';
-import { setOrderNumber } from '@/services/slices/created-order-slice.jsx';
+import {
+	setOrderNumber,
+	startLoading,
+	stopLoading,
+} from '@/services/slices/created-order-slice.jsx';
 
-export const submitOrder = (buns, contents) => async (dispatch) => {
-	try {
-		if (!buns || !contents.length) return alert('Выберите ингредиенты');
+export const submitOrder =
+	(buns, contents, accessToken) => async (dispatch) => {
+		try {
+			if (!buns || !contents.length) return alert('Выберите ингредиенты');
 
-		const ingredientsIds = [
-			...new Set([...contents.map((c) => c._id), buns._id]),
-		];
+			const ingredientsIds = [
+				...new Set([...contents.map((c) => c._id), buns._id]),
+			];
+			dispatch(startLoading());
+			const response = await fetch(`${BASE_URL}/orders`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					authorization: `${accessToken}`,
+				},
+				body: JSON.stringify({ ingredients: ingredientsIds }),
+			});
 
-		const response = await fetch(`${BASE_URL}/orders`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ ingredients: ingredientsIds }),
-		});
+			const data = await response.json();
 
-		const data = await response.json();
-
-		if (response.ok && data.success && data.order?.number) {
-			dispatch(setOrderNumber(data.order.number));
-		} else {
-			throw new Error('Ошибка оформления заказа');
+			if (response.ok && data.success && data.order?.number) {
+				dispatch(setOrderNumber(data.order.number));
+			} else {
+				throw new Error('Ошибка оформления заказа');
+			}
+			dispatch(stopLoading());
+		} catch (err) {
+			alert(err.message);
+			dispatch(stopLoading());
 		}
-	} catch (err) {
-		alert(err.message);
-	}
-};
+	};

@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
+	forgotPassword,
 	login,
 	logout,
 	register,
+	resetPassword,
 } from '@/services/actions/authorizationActions.jsx';
 
 const initialState = {
@@ -29,6 +31,12 @@ const userSlice = createSlice({
 			state.user = action.payload;
 		});
 		builder.addCase(register.fulfilled, (state, action) => {
+			state.user = action.payload;
+		});
+		builder.addCase(forgotPassword.fulfilled, (state, action) => {
+			state.user = action.payload;
+		});
+		builder.addCase(resetPassword.fulfilled, (state, action) => {
 			state.user = action.payload;
 		});
 		builder.addCase(logout.fulfilled, (state) => {

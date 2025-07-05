@@ -67,7 +67,46 @@ const login = async (requestData) => {
 		throw error;
 	}
 };
-
+const forgotPassword = async (requestData) => {
+	try {
+		const response = await fetch(`${BASE_URL}/password-reset`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json;charset=utf-8',
+			},
+			body: JSON.stringify(requestData),
+		});
+		const data = await checkReponse(response);
+		if (data.success) {
+			return true;
+		} else {
+			throw new Error('Ошибка при входе в систему');
+		}
+	} catch (error) {
+		console.error('Ошибка при входе в систему:', error);
+		throw error;
+	}
+};
+const resetPassword = async (requestData) => {
+	try {
+		const response = await fetch(`${BASE_URL}/password-reset/reset`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json;charset=utf-8',
+			},
+			body: JSON.stringify(requestData),
+		});
+		const data = await checkReponse(response);
+		if (data.success) {
+			return true;
+		} else {
+			throw new Error('Ошибка при входе в систему');
+		}
+	} catch (error) {
+		console.error('Ошибка при входе в систему:', error);
+		throw error;
+	}
+};
 const logout = async () => {
 	try {
 		const response = await fetch(`${BASE_URL}/auth/logout`, {
@@ -92,4 +131,4 @@ const logout = async () => {
 		throw error;
 	}
 };
-export { getUser, login, logout, register };
+export { getUser, login, logout, register, forgotPassword, resetPassword };

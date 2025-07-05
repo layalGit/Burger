@@ -10,6 +10,20 @@ export const register = createAsyncThunk('user/register', async (data) => {
 	const res = await api.register(data);
 	return res.user;
 });
+export const forgotPassword = createAsyncThunk(
+	'user/forgotPassword',
+	async (data) => {
+		const res = await api.forgotPassword(data);
+		return res.user;
+	}
+);
+export const resetPassword = createAsyncThunk(
+	'user/resetPassword',
+	async (data) => {
+		const res = await api.resetPassword(data);
+		return res.user;
+	}
+);
 export const logout = createAsyncThunk('user/logout', async () => {
 	await api.logout();
 });

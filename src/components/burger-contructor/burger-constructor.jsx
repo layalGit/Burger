@@ -16,6 +16,7 @@ import {
 } from '../../services/slices/ingredients-constructor-slice.jsx';
 import { DraggableItem } from '@components/burger-contructor/draggble-item/draggble-item.jsx';
 import { submitOrder } from '@/services/actions/submitActions.jsx';
+import { OnlyAuth } from '@components/protected-route.jsx';
 
 export const BurgerConstructor = () => {
 	const dispatch = useDispatch();
@@ -40,10 +41,10 @@ export const BurgerConstructor = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const openOrderModal = () => setIsOpen(true);
 	const closeOrderModal = () => setIsOpen(false);
-
+	const token = localStorage.getItem('accessToken');
 	const handleSubmitOrder = async () => {
 		openOrderModal();
-		dispatch(submitOrder(buns, contents));
+		dispatch(submitOrder(buns, contents, token));
 	};
 
 	const moveContent = useCallback(
@@ -52,7 +53,6 @@ export const BurgerConstructor = () => {
 		},
 		[dispatch]
 	);
-
 	return (
 		<section className={`${styles.burger_constructor} mt-25`}>
 			<div className={`${styles.burger_items}  mb-10 pr-1`}>
@@ -124,9 +124,13 @@ export const BurgerConstructor = () => {
 			</div>
 
 			{isOpen && (
-				<Modal onClose={closeOrderModal}>
-					<OrderDetails />
-				</Modal>
+				<OnlyAuth
+					component={
+						<Modal onClose={closeOrderModal}>
+							<OrderDetails />
+						</Modal>
+					}
+				/>
 			)}
 		</section>
 	);

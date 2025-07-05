@@ -5,32 +5,41 @@ import {
 	EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { forgotPassword } from '@/services/actions/authorizationActions.jsx';
 
 const ForgotPassword = () => {
 	const [email, setEmail] = useState('');
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const NavigateLogin = () => {
 		navigate('/Login');
 	};
-	const NavigateResetPassword = () => {
-		navigate('/ResetPassword');
+	const NavigateResetPassword = (event) => {
+		event.preventDefault();
+		dispatch(forgotPassword({ email: email }))
+			.then(() => {
+				navigate('/ResetPassword');
+			})
+			.catch((error) => {
+				console.error('Ошибка при восстановлении пароля:', error);
+			});
 	};
 	return (
 		<div className={cl.container}>
 			<p className='text text_type_main-medium'>Восстановление пароля</p>
-			<EmailInput
-				value={email}
-				onChange={(e) => setEmail(e.target.value)}
-				isIcon={false}
-				placeholder={'Укажите e-mail'}
-			/>
-			<Button
-				htmlType='button'
-				type='primary'
-				size='medium'
-				onClick={NavigateResetPassword}>
-				Восстановить
-			</Button>
+			<form onSubmit={NavigateResetPassword} className={cl.flexForm}>
+				<EmailInput
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
+					isIcon={false}
+					placeholder={'Укажите e-mail'}
+				/>
+				<Button htmlType='submit' type='primary' size='medium'>
+					Восстановить
+				</Button>
+			</form>
+
 			<div className={cl.flexColumn} style={{ marginTop: '30px' }}>
 				<div className={cl.flexRow}>
 					<p className='text text_type_main-default text_color_inactive'>
