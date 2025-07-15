@@ -1,24 +1,25 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-
-import { fetchIngredients } from '@/services/actions/ingredientsActions.jsx';
+import { useEffect } from 'react';
+import { fetchIngredients } from '../../services/actions/ingredientsActions.tsx';
+// @ts-expect-error 'ignore'
+import { checkUserAuth } from '@/services/actions/authorizationActions.jsx';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
-import HomePage from '@pages/homePage.jsx';
-import LoginPage from '@pages/loginPage.jsx';
-import NotFound from '@pages/NotFound.jsx';
-import RegisterPage from '@pages/registerPage.jsx';
-import ForgotPassword from '@pages/forgot-password.jsx';
-import ResetPassword from '@pages/reset-password.jsx';
-import { AppHeader } from '@components/app-header/app-header.jsx';
-import { IngredientDetails } from '@components/ingredient-details/ingredient-details.jsx';
-import { Modal } from '@components/modal/modal.jsx';
-import ProfilePage from '@pages/profilePage.jsx';
-import { checkUserAuth } from '@/services/actions/authorizationActions.jsx';
-import { OnlyAuth, OnlyUnAuth } from '@components/protected-route.jsx';
+import HomePage from '@pages/homePage.tsx';
+import LoginPage from '@pages/loginPage.tsx';
+import NotFound from '@pages/NotFound.tsx';
+import RegisterPage from '@pages/registerPage.tsx';
+import ForgotPassword from '@pages/forgot-password.tsx';
+import ResetPassword from '@pages/reset-password.tsx';
+
+import { AppHeader } from '@components/app-header/app-header.tsx';
+import { IngredientDetails } from '@components/ingredient-details/ingredient-details.tsx';
+import { Modal } from '@components/modal/modal.tsx';
+import ProfilePage from '@pages/profilePage.tsx';
+import { OnlyAuth, OnlyUnAuth } from '@components/protected-route.tsx';
+import { useAppDispatch } from '@utils/hooks.tsx';
 
 export const App = () => {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		dispatch(fetchIngredients());

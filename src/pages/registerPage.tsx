@@ -1,67 +1,59 @@
-import React, { useState } from 'react';
-import cl from './pages.module.css';
+import { FormEvent, useState } from 'react';
+import cl from '@pages/pages.module.css';
 import {
 	Button,
 	EmailInput,
+	Input,
 	PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { login } from '@/services/actions/authorizationActions.jsx';
+//@ts-expect-error 'ignore'
+import { register } from '@/services/actions/authorizationActions.jsx';
 
-const LoginPage = () => {
+const RegisterPage = () => {
+	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const dispatch = useDispatch();
-	const handleClick = (event) => {
+	const handleClick = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		dispatch(login({ email: email, password: password }));
+		dispatch(register({ email: email, name: name, password: password }));
 	};
+
 	const navigate = useNavigate();
-	const NavigateRegister = () => {
-		navigate('/Register');
-	};
-	const NavigateForgotPassword = () => {
-		navigate('/ForgotPassword');
+	const NavigateLogin = () => {
+		navigate('/Login');
 	};
 	return (
 		<div className={cl.container}>
-			<p className='text text_type_main-medium'>Вход</p>
+			<p className='text text_type_main-medium'>Регистрация</p>
 			<form onSubmit={handleClick} className={cl.flexForm}>
+				<Input
+					placeholder={'Имя'}
+					value={name}
+					onChange={(e) => setName(e.target.value)}
+				/>
 				<EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
 				<PasswordInput
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
 				<Button htmlType='submit' type='primary' size='medium'>
-					Войти
+					Зарагестрироваться
 				</Button>
 			</form>
-
 			<div className={cl.flexColumn} style={{ marginTop: '30px' }}>
 				<div className={cl.flexRow}>
 					<p className='text text_type_main-default text_color_inactive'>
-						Вы новый пользователь?
+						Уже зарагестрированы?
 					</p>
 					<Button
 						htmlType='button'
 						type='secondary'
 						size='medium'
-						onClick={NavigateRegister}>
-						Зарегестрироваться
-					</Button>
-				</div>
-
-				<div className={cl.flexRow}>
-					<p className='text text_type_main-default text_color_inactive'>
-						Забыли пароль?
-					</p>
-					<Button
-						htmlType='button'
-						type='secondary'
-						size='medium'
-						onClick={NavigateForgotPassword}>
-						Восстановить пароль
+						onClick={NavigateLogin}>
+						Войти
 					</Button>
 				</div>
 			</div>
@@ -69,4 +61,4 @@ const LoginPage = () => {
 	);
 };
 
-export default LoginPage;
+export default RegisterPage;

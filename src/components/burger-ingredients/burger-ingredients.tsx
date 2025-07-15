@@ -1,15 +1,30 @@
-import React, { useState, useRef, useEffect } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IngredientItem } from '@components/burger-ingredients/burger-Item/Ingredient-Item.jsx';
+import { IngredientItem } from '@components/burger-ingredients/burger-Item/Ingredient-Item.tsx';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 
+export type IngredientType = 'bun' | 'main' | 'sauce';
+export type Ingredient = {
+	_id: string;
+	name: string;
+	type: IngredientType;
+	proteins: number;
+	fat: number;
+	carbohydrates: number;
+	calories: number;
+	price: number;
+	image: string;
+	image_large: string;
+	image_mobile: string;
+	__v: number;
+};
 export const BurgerIngredients = () => {
+	// @ts-expect-error 'ignore'
 	const ingredients = useSelector((store) => store.ingredients.allIngredients);
-	const scrollContainerRef = useRef(null);
-	console.log(ingredients);
-	const filterByType = (ingredients, type) =>
+	const scrollContainerRef = useRef<HTMLDivElement>(null);
+	const filterByType = (ingredients: Ingredient[], type: IngredientType) =>
 		ingredients.filter((item) => item.type === type);
 
 	const [activeTab, setActiveTab] = useState('bun');
@@ -55,9 +70,11 @@ export const BurgerIngredients = () => {
 		}
 	}, []);
 
-	const navigateToSection = (sectionId) => {
+	const navigateToSection = (sectionId: string) => {
 		const targetSection = document.getElementById(sectionId);
-		targetSection.scrollIntoView({ behavior: 'smooth' });
+		if (targetSection) {
+			targetSection.scrollIntoView({ behavior: 'smooth' });
+		}
 	};
 	const location = useLocation();
 	return (

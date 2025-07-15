@@ -1,19 +1,42 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
+//@ts-expect-error 'ignore'
 import { removeContent } from '@/services/slices/ingredients-constructor-slice.jsx';
 import cl from './draggble-item.module.css';
+import type { Identifier } from 'dnd-core';
 
 const ItemTypes = {
 	INGREDIENT: 'ingredient',
 };
-
-export const DraggableItem = ({ content, index, moveContent }) => {
+export type TIngredient = {
+	name: string;
+	price: number;
+	image: string;
+	uniqueId: string;
+};
+type TBurgerConstructorItem = {
+	content: TIngredient;
+	index: number;
+	moveContent: (dragIndex: number, hoverIndex: number) => void;
+};
+type DragObject = TIngredient & { index: number };
+type DragCollectedProps = { isDragging: boolean };
+type DropCollectedProps = { handlerId: Identifier | null };
+export const DraggableItem = ({
+	content,
+	index,
+	moveContent,
+}: TBurgerConstructorItem): React.JSX.Element => {
 	const dispatch = useDispatch();
-	const ref = useRef(null);
+	const ref = useRef<HTMLDivElement | null>(null);
 
-	const [{ handlerId }, drop] = useDrop({
+	const [{ handlerId }, drop] = useDrop<
+		DragObject,
+		unknown,
+		DropCollectedProps
+	>({
 		accept: ItemTypes.INGREDIENT,
 		collect(monitor) {
 			return {
@@ -32,6 +55,7 @@ export const DraggableItem = ({ content, index, moveContent }) => {
 			const hoverMiddleY =
 				(hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 			const clientOffset = monitor.getClientOffset();
+			if (!clientOffset) return;
 			const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
 			if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
@@ -42,10 +66,14 @@ export const DraggableItem = ({ content, index, moveContent }) => {
 		},
 	});
 
-	const [{ isDragging }, drag] = useDrag({
+	const [{ isDragging }, drag] = useDrag<
+		DragObject,
+		unknown,
+		DragCollectedProps
+	>({
 		type: ItemTypes.INGREDIENT,
 		item: () => {
-			return { id: content.uniqueId, index };
+			return { ...content, index };
 		},
 		collect: (monitor) => ({
 			isDragging: monitor.isDragging(),

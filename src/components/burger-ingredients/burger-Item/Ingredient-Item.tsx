@@ -1,4 +1,3 @@
-import React from 'react';
 import cl from './Ingredient-Item.module.css';
 import {
 	Counter,
@@ -7,8 +6,25 @@ import {
 import { string, number, func } from 'prop-types';
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
+import { IngredientType } from '@components/burger-ingredients/burger-ingredients.tsx';
 
-export const IngredientItem = ({ image, name, price, onClick, _id, type }) => {
+type IngredientItemProps = {
+	image: string;
+	name: string;
+	price: number;
+	onClick?: () => void;
+	_id: string;
+	type: IngredientType;
+};
+export const IngredientItem = ({
+	image,
+	name,
+	price,
+	onClick,
+	_id,
+	type,
+}: IngredientItemProps) => {
+	//@ts-expect-error 'ignore'
 	const counts = useSelector((state) => state.constructorIngredients.counts);
 	const ingredientCount = counts[_id];
 

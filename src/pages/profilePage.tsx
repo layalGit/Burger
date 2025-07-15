@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import cl from './pages.module.css';
 import {
@@ -7,9 +6,12 @@ import {
 	PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
+//@ts-expect-error 'ignore'
 import { logout } from '@/services/actions/authorizationActions.jsx';
+import { useState } from 'react';
 
 const ProfilePage = () => {
+	//@ts-expect-error 'ignore'
 	const state = useSelector((state) => state.user.user.user);
 	const [inputValue, setInputValue] = useState(state.name);
 	const [email, setEmail] = useState(state.email);
@@ -62,7 +64,6 @@ const ProfilePage = () => {
 						<EmailInput
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
-							icon={'EditIcon'}
 						/>
 						<PasswordInput
 							value={password}

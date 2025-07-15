@@ -1,7 +1,9 @@
-import { BASE_URL } from '@/config/configAPI.jsx';
+import { BASE_URL } from '../config/configAPI.ts';
 
-const checkReponse = (res) => {
-	return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+const checkReponse = (res: Response) => {
+	return res.ok
+		? res.json()
+		: res.json().then((err: unknown) => Promise.reject(err));
 };
 
 export const refreshToken = () => {
@@ -29,14 +31,28 @@ export const refreshToken = () => {
 	);
 };
 
-export const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async (url: string, options: RequestInit) => {
 	try {
 		const res = await fetch(url, options);
 		return await checkReponse(res);
-	} catch (err) {
-		if (err.message === 'jwt expired') {
-			const refreshData = await refreshToken(); //обновляем токен
-			options.headers.authorization = refreshData.accessToken;
+	} catch (err: unknown) {
+		if (err instanceof Error && err.message === 'jwt expired') {
+			const refreshData = await refreshToken();
+			if (options.headers !== undefined) {
+				if (options.headers instanceof Headers) {
+					options.headers.set('authorization', refreshData.accessToken);
+				} else if (Array.isArray(options.headers)) {
+					options.headers.push(['authorization', refreshData.accessToken]);
+				} else if (
+					typeof options.headers === 'object' &&
+					options.headers !== null
+				) {
+					options.headers = {
+						...options.headers,
+						authorization: refreshData.accessToken,
+					};
+				}
+			}
 			const res = await fetch(url, options); //повторяем запрос
 			return await checkReponse(res);
 		} else {

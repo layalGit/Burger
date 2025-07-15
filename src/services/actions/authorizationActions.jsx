@@ -1,4 +1,4 @@
-import * as api from '@utils/api.js';
+import * as api from '@utils/api.ts';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { setIsAuthChecked, setUser } from '@/services/slices/user-slice.jsx';
 

@@ -1,45 +1,45 @@
-import React, { useState } from 'react';
 import cl from '@pages/pages.module.css';
 import {
 	Button,
-	EmailInput,
+	Input,
+	PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { forgotPassword } from '@/services/actions/authorizationActions.jsx';
+//@ts-expect-error 'ignore'
+import { resetPassword } from '@/services/actions/authorizationActions.jsx';
+import { FormEvent, useState } from 'react';
 
-const ForgotPassword = () => {
-	const [email, setEmail] = useState('');
+const ResetPassword = () => {
+	const [password, setPassword] = useState('');
+	const [input, setInput] = useState('');
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const handleClick = (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		dispatch(resetPassword({ password: password, token: input }));
+	};
 	const NavigateLogin = () => {
 		navigate('/Login');
-	};
-	const NavigateResetPassword = (event) => {
-		event.preventDefault();
-		dispatch(forgotPassword({ email: email }))
-			.then(() => {
-				navigate('/ResetPassword');
-			})
-			.catch((error) => {
-				console.error('Ошибка при восстановлении пароля:', error);
-			});
 	};
 	return (
 		<div className={cl.container}>
 			<p className='text text_type_main-medium'>Восстановление пароля</p>
-			<form onSubmit={NavigateResetPassword} className={cl.flexForm}>
-				<EmailInput
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-					isIcon={false}
-					placeholder={'Укажите e-mail'}
+			<form onSubmit={handleClick} className={cl.flexForm}>
+				<PasswordInput
+					placeholder={'Введите новый пароль'}
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
+				/>
+				<Input
+					placeholder={'Введите код из письма'}
+					value={input}
+					onChange={(e) => setInput(e.target.value)}
 				/>
 				<Button htmlType='submit' type='primary' size='medium'>
-					Восстановить
+					Сохранить
 				</Button>
 			</form>
-
 			<div className={cl.flexColumn} style={{ marginTop: '30px' }}>
 				<div className={cl.flexRow}>
 					<p className='text text_type_main-default text_color_inactive'>
@@ -58,4 +58,4 @@ const ForgotPassword = () => {
 	);
 };
 
-export default ForgotPassword;
+export default ResetPassword;

@@ -1,18 +1,20 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 import cl from './ingredient-details.module.css';
 import { useParams } from 'react-router-dom';
+import { Ingredient } from '@components/burger-ingredients/burger-ingredients.tsx';
 
 export const IngredientDetails = () => {
 	const { ingredientId } = useParams();
 	const allIngredients = useSelector(
+		//@ts-expect-error 'ignore'
 		(store) => store.ingredients.allIngredients
 	);
-	const ingredient = allIngredients.find((item) => item._id === ingredientId);
+	const ingredient = allIngredients.find(
+		(item: Ingredient) => item._id === ingredientId
+	);
 	if (!ingredient) {
 		return <div>Ингредиент не найден</div>;
 	}
-	console.log(ingredient);
 	return (
 		<div className={cl.details_content}>
 			<img

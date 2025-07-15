@@ -1,19 +1,62 @@
-import { fetchWithRefresh } from '@utils/fetchWithRefresh.js';
-import { BASE_URL } from '@/config/configAPI.jsx';
+import { BASE_URL } from '@/config/configAPI.ts';
+import { fetchWithRefresh } from '@utils/fetchWithRefresh.tsx';
 
-const checkReponse = (res) => {
-	return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+type UserResponse = {
+	success: boolean;
+	message?: string;
+	refreshToken: string;
+	accessToken: string;
 };
 
-const getUser = async () => {
+type RegisterRequestData = {
+	username: string;
+	password: string;
+	email: string;
+};
+
+type LoginRequestData = {
+	username: string;
+	password: string;
+};
+
+type ForgotPasswordRequestData = {
+	email: string;
+};
+
+type ResetPasswordRequestData = {
+	token: string;
+	newPassword: string;
+	confirmNewPassword: string;
+};
+type ErrorResponse = {
+	success: boolean;
+	code: number;
+	message: string;
+	refreshToken: string;
+	accessToken: string;
+};
+const checkReponse = (res: Response): Promise<UserResponse | ErrorResponse> =>
+	res.ok
+		? res.json()
+		: res.json().then((err: ErrorResponse) => Promise.reject(err));
+
+const getUser = async (): Promise<UserResponse> => {
 	try {
+		const accessToken = localStorage.getItem('accessToken');
+
+		const headers: HeadersInit = {
+			'Content-Type': 'application/json;charset=utf-8',
+		};
+
+		if (accessToken) {
+			headers.authorization = `Bearer ${accessToken}`;
+		}
+
 		const response = await fetchWithRefresh(`${BASE_URL}/auth/user`, {
 			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json;charset=utf-8',
-				authorization: localStorage.getItem('accessToken'),
-			},
+			headers,
 		});
+
 		return response;
 	} catch (error) {
 		localStorage.removeItem('refreshToken');
@@ -21,7 +64,10 @@ const getUser = async () => {
 		throw error;
 	}
 };
-const register = async (requestData) => {
+
+const register = async (
+	requestData: RegisterRequestData
+): Promise<UserResponse> => {
 	try {
 		const response = await fetch(`${BASE_URL}/auth/register`, {
 			method: 'POST',
@@ -45,7 +91,8 @@ const register = async (requestData) => {
 		throw error;
 	}
 };
-const login = async (requestData) => {
+
+const login = async (requestData: LoginRequestData): Promise<UserResponse> => {
 	try {
 		const response = await fetch(`${BASE_URL}/auth/login`, {
 			method: 'POST',
@@ -67,7 +114,10 @@ const login = async (requestData) => {
 		throw error;
 	}
 };
-const forgotPassword = async (requestData) => {
+
+const forgotPassword = async (
+	requestData: ForgotPasswordRequestData
+): Promise<boolean> => {
 	try {
 		const response = await fetch(`${BASE_URL}/password-reset`, {
 			method: 'POST',
@@ -80,14 +130,17 @@ const forgotPassword = async (requestData) => {
 		if (data.success) {
 			return true;
 		} else {
-			throw new Error('Ошибка при входе в систему');
+			throw new Error('Ошибка при восстановлении пароля');
 		}
 	} catch (error) {
-		console.error('Ошибка при входе в систему:', error);
+		console.error('Ошибка при восстановлении пароля:', error);
 		throw error;
 	}
 };
-const resetPassword = async (requestData) => {
+
+const resetPassword = async (
+	requestData: ResetPasswordRequestData
+): Promise<boolean> => {
 	try {
 		const response = await fetch(`${BASE_URL}/password-reset/reset`, {
 			method: 'POST',
@@ -100,14 +153,15 @@ const resetPassword = async (requestData) => {
 		if (data.success) {
 			return true;
 		} else {
-			throw new Error('Ошибка при входе в систему');
+			throw new Error('Ошибка при сбросе пароля');
 		}
 	} catch (error) {
-		console.error('Ошибка при входе в систему:', error);
+		console.error('Ошибка при сбросе пароля:', error);
 		throw error;
 	}
 };
-const logout = async () => {
+
+const logout = async (): Promise<UserResponse> => {
 	try {
 		const response = await fetch(`${BASE_URL}/auth/logout`, {
 			method: 'POST',
@@ -131,4 +185,13 @@ const logout = async () => {
 		throw error;
 	}
 };
+
+export type {
+	UserResponse,
+	RegisterRequestData,
+	LoginRequestData,
+	ForgotPasswordRequestData,
+	ResetPasswordRequestData,
+};
+
 export { getUser, login, logout, register, forgotPassword, resetPassword };

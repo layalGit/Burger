@@ -1,18 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ModalOverlay } from '@components/modal-overlay/modal-overlay.jsx';
+import { ModalOverlay } from '@components/modal-overlay/modal-overlay.tsx';
 import cl from './modal.module.css';
-import { func, node, string } from 'prop-types';
 
-export const Modal = ({ title, children, onClose }) => {
+type ModalProps = {
+	title?: string;
+	onClose: () => void;
+	children: ReactNode;
+};
+export const Modal: FC<ModalProps> = ({ title, children, onClose }) => {
 	const modalRoot = useRef(document.getElementById('modal-root'));
-	const [open, setOpen] = useState(true); // начальное состояние открыто
-
+	const [open, setOpen] = useState(true);
+	const closeModal = () => {
+		setOpen(false);
+		onClose();
+	};
 	useEffect(() => {
-		const handleEscapePress = (event) => {
+		const handleEscapePress = (event: KeyboardEvent) => {
 			if (event.key === 'Escape') {
-				closeModal(); // закрываем модал при нажатии Esc
+				setOpen(false);
+				onClose();
 			}
 		};
 
@@ -21,13 +29,9 @@ export const Modal = ({ title, children, onClose }) => {
 		return () => {
 			document.removeEventListener('keydown', handleEscapePress);
 		};
-	}, []);
+	}, [onClose]);
 
-	function closeModal() {
-		setOpen(false);
-		onClose();
-	}
-
+	if (!open || !modalRoot.current) return null;
 	return open
 		? createPortal(
 				<>
@@ -43,10 +47,4 @@ export const Modal = ({ title, children, onClose }) => {
 				modalRoot.current
 			)
 		: null;
-};
-
-Modal.propTypes = {
-	title: string.isRequired,
-	children: node.isRequired,
-	onClose: func.isRequired,
 };
