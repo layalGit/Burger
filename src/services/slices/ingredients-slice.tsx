@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchIngredients } from '@/services/actions/ingredientsActions.jsx';
+import { fetchIngredients } from '@/services/actions/ingredientsActions.js';
 import { Ingredient } from '@components/burger-ingredients/burger-ingredients.tsx';
 
 type IngredientsState = {

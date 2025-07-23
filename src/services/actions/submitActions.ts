@@ -3,10 +3,16 @@ import {
 	setOrderNumber,
 	startLoading,
 	stopLoading,
-} from '@/services/slices/created-order-slice.jsx';
+} from '../slices/created-order-slice.tsx';
+import {
+	buns,
+	content,
+} from '@services/slices/ingredients-constructor-slice.tsx';
+import { Dispatch, AnyAction } from '@reduxjs/toolkit';
 
 export const submitOrder =
-	(buns, contents, accessToken) => async (dispatch) => {
+	(buns: buns | null, contents: content[], accessToken: string | null) =>
+	async (dispatch: Dispatch<AnyAction>) => {
 		try {
 			if (!buns || !contents.length) return alert('Выберите ингредиенты');
 
@@ -32,7 +38,11 @@ export const submitOrder =
 			}
 			dispatch(stopLoading());
 		} catch (err) {
-			alert(err.message);
+			if (err instanceof Error) {
+				alert(err.message);
+			} else {
+				alert('err');
+			}
 			dispatch(stopLoading());
 		}
 	};

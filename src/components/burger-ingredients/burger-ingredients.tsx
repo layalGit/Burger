@@ -1,9 +1,9 @@
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientItem } from '@components/burger-ingredients/burger-Item/Ingredient-Item.tsx';
-import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
+import { useAppSelector } from '@utils/hooks.tsx';
 
 export type IngredientType = 'bun' | 'main' | 'sauce';
 export type Ingredient = {
@@ -21,8 +21,9 @@ export type Ingredient = {
 	__v: number;
 };
 export const BurgerIngredients = () => {
-	// @ts-expect-error 'ignore'
-	const ingredients = useSelector((store) => store.ingredients.allIngredients);
+	const ingredients = useAppSelector(
+		(store) => store.ingredients.allIngredients
+	);
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
 	const filterByType = (ingredients: Ingredient[], type: IngredientType) =>
 		ingredients.filter((item) => item.type === type);

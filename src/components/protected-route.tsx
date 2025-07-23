@@ -1,8 +1,7 @@
-import { useSelector } from 'react-redux';
-//@ts-expect-error 'ignore'
-import { getIsAuthChecked, getUser } from '@/services/slices/user-slice.jsx';
+import { getIsAuthChecked, getUser } from '../services/slices/user-slice.tsx';
 import { Navigate, useLocation } from 'react-router-dom';
 import React from 'react';
+import { useAppSelector } from '@utils/hooks.tsx';
 
 type Component = React.JSX.Element;
 
@@ -12,8 +11,8 @@ type ProtectedProps = {
 };
 
 const Protected = ({ onlyUnAuth = false, component }: ProtectedProps) => {
-	const isAuthChecked = useSelector(getIsAuthChecked);
-	const user = useSelector(getUser);
+	const isAuthChecked = useAppSelector(getIsAuthChecked);
+	const user = useAppSelector(getUser);
 	const location = useLocation();
 
 	if (!isAuthChecked) {

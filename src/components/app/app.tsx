@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
-import { fetchIngredients } from '../../services/actions/ingredientsActions.tsx';
-// @ts-expect-error 'ignore'
-import { checkUserAuth } from '@/services/actions/authorizationActions.jsx';
+import { fetchIngredients } from '../../services/actions/ingredientsActions.ts';
+import { checkUserAuth } from '../../services/actions/authorizationActions.ts';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import HomePage from '@pages/homePage.tsx';
@@ -17,10 +16,12 @@ import { Modal } from '@components/modal/modal.tsx';
 import ProfilePage from '@pages/profilePage.tsx';
 import { OnlyAuth, OnlyUnAuth } from '@components/protected-route.tsx';
 import { useAppDispatch } from '@utils/hooks.tsx';
+import OrdersProfile from '@pages/ordersProfile.tsx';
+import Feed from '@pages/feed.tsx';
+import OrderInfoPage from '@pages/orderInfoPage.tsx';
 
 export const App = () => {
 	const dispatch = useAppDispatch();
-
 	useEffect(() => {
 		dispatch(fetchIngredients());
 		dispatch(checkUserAuth());
@@ -41,10 +42,6 @@ export const App = () => {
 					path='/login'
 					element={<OnlyUnAuth component={<LoginPage />} />}
 				/>
-				<Route
-					path='/profile'
-					element={<OnlyAuth component={<ProfilePage />} />}
-				/>
 				<Route path='/register' element={<RegisterPage />} />
 				<Route path='/forgotpassword' element={<ForgotPassword />} />
 				<Route path='/resetpassword' element={<ResetPassword />} />
@@ -53,13 +50,46 @@ export const App = () => {
 					path='/ingredients/:ingredientId'
 					element={<IngredientDetails />}
 				/>
-
+				<Route
+					path='/profile'
+					element={<OnlyAuth component={<ProfilePage />} />}
+				/>
+				<Route
+					path='/profile/orders'
+					element={<OnlyAuth component={<OrdersProfile />} />}
+				/>
+				<Route
+					path='/profile/orders/:number'
+					element={<OnlyAuth component={<OrderInfoPage />} />}
+				/>
+				<Route path='/feed' element={<Feed />} />
+				<Route path='/feed/:number' element={<OrderInfoPage />} />
 				<Route path='*' element={<NotFound />} />
 			</Routes>
 
 			{background && (
 				<>
 					<Routes>
+						<Route
+							path='/profile/orders/:number'
+							element={
+								<OnlyAuth
+									component={
+										<Modal onClose={handleModalClose}>
+											<OrderInfoPage />
+										</Modal>
+									}
+								/>
+							}
+						/>
+						<Route
+							path='/feed/:number'
+							element={
+								<Modal onClose={handleModalClose}>
+									<OrderInfoPage />
+								</Modal>
+							}
+						/>
 						<Route
 							path='/ingredients/:ingredientId'
 							element={

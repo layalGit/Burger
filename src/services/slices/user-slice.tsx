@@ -1,13 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-	forgotPassword,
-	login,
-	logout,
-	register,
-	resetPassword,
-} from '@/services/actions/authorizationActions.jsx';
+import { login, logout, register } from '../actions/authorizationActions.ts';
 
-const initialState = {
+type User = {
+	email: string;
+	password: string;
+	name?: string;
+};
+type initialState = {
+	user: User | null;
+	isAuthChecked: boolean | null;
+};
+const initialState: initialState = {
 	user: null,
 	isAuthChecked: false,
 };
@@ -19,7 +22,7 @@ const userSlice = createSlice({
 			state.user = action.payload;
 		},
 		setIsAuthChecked: (state, action) => {
-			state.isAuthChecked = action.payload;
+			state.isAuthChecked = action.payload as boolean;
 		},
 	},
 	selectors: {
@@ -28,16 +31,10 @@ const userSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder.addCase(login.fulfilled, (state, action) => {
-			state.user = action.payload;
+			state.user = action.payload as User;
 		});
 		builder.addCase(register.fulfilled, (state, action) => {
-			state.user = action.payload;
-		});
-		builder.addCase(forgotPassword.fulfilled, (state, action) => {
-			state.user = action.payload;
-		});
-		builder.addCase(resetPassword.fulfilled, (state, action) => {
-			state.user = action.payload;
+			state.user = action.payload as User;
 		});
 		builder.addCase(logout.fulfilled, (state) => {
 			state.user = null;

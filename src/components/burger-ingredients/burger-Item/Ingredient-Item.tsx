@@ -5,8 +5,8 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { string, number, func } from 'prop-types';
 import { useDrag } from 'react-dnd';
-import { useSelector } from 'react-redux';
 import { IngredientType } from '@components/burger-ingredients/burger-ingredients.tsx';
+import { useAppSelector } from '@utils/hooks.tsx';
 
 type IngredientItemProps = {
 	image: string;
@@ -24,8 +24,7 @@ export const IngredientItem = ({
 	_id,
 	type,
 }: IngredientItemProps) => {
-	//@ts-expect-error 'ignore'
-	const counts = useSelector((state) => state.constructorIngredients.counts);
+	const counts = useAppSelector((state) => state.constructorIngredients.counts);
 	const ingredientCount = counts[_id];
 
 	const [{ isDragging }, dragRef] = useDrag({

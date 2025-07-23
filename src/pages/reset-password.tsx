@@ -5,19 +5,23 @@ import {
 	PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-//@ts-expect-error 'ignore'
-import { resetPassword } from '@/services/actions/authorizationActions.jsx';
+import { resetPassword } from '../services/actions/authorizationActions.ts';
 import { FormEvent, useState } from 'react';
+import { useAppDispatch } from '@utils/hooks.tsx';
+import { ResetPasswordRequestData } from '@utils/api.ts';
 
 const ResetPassword = () => {
 	const [password, setPassword] = useState('');
-	const [input, setInput] = useState('');
+	const [token, setToken] = useState('');
+	const resetPasswordData: ResetPasswordRequestData = {
+		token,
+		password,
+	};
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const handleClick = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		dispatch(resetPassword({ password: password, token: input }));
+		dispatch(resetPassword(resetPasswordData));
 	};
 	const NavigateLogin = () => {
 		navigate('/Login');
@@ -33,8 +37,8 @@ const ResetPassword = () => {
 				/>
 				<Input
 					placeholder={'Введите код из письма'}
-					value={input}
-					onChange={(e) => setInput(e.target.value)}
+					value={token}
+					onChange={(e) => setToken(e.target.value)}
 				/>
 				<Button htmlType='submit' type='primary' size='medium'>
 					Сохранить

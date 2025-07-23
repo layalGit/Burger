@@ -6,6 +6,10 @@ type UserResponse = {
 	message?: string;
 	refreshToken: string;
 	accessToken: string;
+	user: {
+		email: string;
+		name: string;
+	};
 };
 
 type RegisterRequestData = {
@@ -15,7 +19,7 @@ type RegisterRequestData = {
 };
 
 type LoginRequestData = {
-	username: string;
+	email: string;
 	password: string;
 };
 
@@ -25,15 +29,12 @@ type ForgotPasswordRequestData = {
 
 type ResetPasswordRequestData = {
 	token: string;
-	newPassword: string;
-	confirmNewPassword: string;
+	password: string;
 };
 type ErrorResponse = {
-	success: boolean;
+	success: false;
 	code: number;
 	message: string;
-	refreshToken: string;
-	accessToken: string;
 };
 const checkReponse = (res: Response): Promise<UserResponse | ErrorResponse> =>
 	res.ok
@@ -117,7 +118,7 @@ const login = async (requestData: LoginRequestData): Promise<UserResponse> => {
 
 const forgotPassword = async (
 	requestData: ForgotPasswordRequestData
-): Promise<boolean> => {
+): Promise<{ success: boolean }> => {
 	try {
 		const response = await fetch(`${BASE_URL}/password-reset`, {
 			method: 'POST',
@@ -128,7 +129,7 @@ const forgotPassword = async (
 		});
 		const data = await checkReponse(response);
 		if (data.success) {
-			return true;
+			return { success: true };
 		} else {
 			throw new Error('Ошибка при восстановлении пароля');
 		}
@@ -140,7 +141,7 @@ const forgotPassword = async (
 
 const resetPassword = async (
 	requestData: ResetPasswordRequestData
-): Promise<boolean> => {
+): Promise<{ success: boolean }> => {
 	try {
 		const response = await fetch(`${BASE_URL}/password-reset/reset`, {
 			method: 'POST',
@@ -151,7 +152,7 @@ const resetPassword = async (
 		});
 		const data = await checkReponse(response);
 		if (data.success) {
-			return true;
+			return { success: true };
 		} else {
 			throw new Error('Ошибка при сбросе пароля');
 		}
@@ -185,7 +186,6 @@ const logout = async (): Promise<UserResponse> => {
 		throw error;
 	}
 };
-
 export type {
 	UserResponse,
 	RegisterRequestData,

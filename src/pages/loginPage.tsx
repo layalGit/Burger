@@ -6,17 +6,21 @@ import {
 	PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-// @ts-expect-error 'ignore'
-import { login } from '@/services/actions/authorizationActions.jsx';
+import { login } from '../services/actions/authorizationActions.ts';
+import { useAppDispatch } from '@utils/hooks.tsx';
+import { LoginRequestData } from '@utils/api.ts';
 
 const LoginPage = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const dispatch = useDispatch();
+	const loginData: LoginRequestData = {
+		email,
+		password,
+	};
+	const dispatch = useAppDispatch();
 	const handleClick = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		dispatch(login({ email: email, password: password }));
+		dispatch(login(loginData));
 	};
 	const navigate = useNavigate();
 	const NavigateRegister = () => {

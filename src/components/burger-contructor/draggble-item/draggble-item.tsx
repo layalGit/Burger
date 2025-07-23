@@ -1,11 +1,10 @@
 import React, { useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
-//@ts-expect-error 'ignore'
-import { removeContent } from '@/services/slices/ingredients-constructor-slice.jsx';
+import { removeContent } from '../../../services/slices/ingredients-constructor-slice.tsx';
 import cl from './draggble-item.module.css';
 import type { Identifier } from 'dnd-core';
+import { useAppDispatch } from '@utils/hooks.tsx';
 
 const ItemTypes = {
 	INGREDIENT: 'ingredient',
@@ -29,7 +28,7 @@ export const DraggableItem = ({
 	index,
 	moveContent,
 }: TBurgerConstructorItem): React.JSX.Element => {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const ref = useRef<HTMLDivElement | null>(null);
 
 	const [{ handlerId }, drop] = useDrop<

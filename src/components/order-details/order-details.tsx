@@ -1,11 +1,10 @@
 import done from '../../images/done.png';
 import cl from './order-details.module.css';
-import { useSelector } from 'react-redux';
 import { Preloader } from '../preloader/preloader.tsx';
+import { useAppSelector } from '@utils/hooks.tsx';
 
 export const OrderDetails = () => {
-	// @ts-expect-error 'ignore'
-	const order = useSelector((state) => state.orderIngredients);
+	const order = useAppSelector((state) => state.orderIngredients);
 	return (
 		<div className={`${cl.order_details} text_type_main-default`}>
 			<p className={`${cl.shadow} text text_type_digits-large`}>

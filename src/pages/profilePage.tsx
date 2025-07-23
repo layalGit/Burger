@@ -5,18 +5,16 @@ import {
 	Input,
 	PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
-//@ts-expect-error 'ignore'
-import { logout } from '@/services/actions/authorizationActions.jsx';
+import { logout } from '../services/actions/authorizationActions.ts';
 import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@utils/hooks.tsx';
 
 const ProfilePage = () => {
-	//@ts-expect-error 'ignore'
-	const state = useSelector((state) => state.user.user.user);
-	const [inputValue, setInputValue] = useState(state.name);
-	const [email, setEmail] = useState(state.email);
-	const [password, setPassword] = useState(state.password);
-	const dispatch = useDispatch();
+	const state = useAppSelector((state) => state.user.user);
+	const [inputValue, setInputValue] = useState(state?.name ?? '');
+	const [email, setEmail] = useState(state?.email ?? '');
+	const [password, setPassword] = useState(state?.password ?? '');
+	const dispatch = useAppDispatch();
 	const handleClick = () => {
 		dispatch(logout());
 	};
@@ -33,7 +31,7 @@ const ProfilePage = () => {
 						Профиль
 					</NavLink>
 					<NavLink
-						to='/'
+						to='/profile/orders'
 						end
 						className={({ isActive }) =>
 							`${cl.navLink} ${isActive ? cl.active : ''} pt-4 pb-4`

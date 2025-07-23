@@ -1,19 +1,36 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 
-const initialState = {
+export type buns = {
+	_id: string;
+	image: string;
+	name: string;
+	price: number;
+	type: string;
+};
+export type content = buns & { uniqueId: string };
+type Counts = {
+	[id: string]: number;
+};
+type ConstructorState = {
+	buns: buns | null;
+	contents: content[];
+	totalPrice: number;
+	counts: Counts;
+};
+const initialState: ConstructorState = {
 	buns: null,
 	contents: [],
 	totalPrice: 0,
 	counts: {},
 };
 
-const calculateTotalPrice = (state) => {
+const calculateTotalPrice = (state: ConstructorState) => {
 	let totalPrice = 0;
 	if (state.buns) {
 		totalPrice += state.buns.price * state.counts[state.buns._id];
 	}
-	for (let ingredient of state.contents) {
+	for (const ingredient of state.contents) {
 		totalPrice += ingredient.price * state.counts[ingredient._id];
 	}
 	return totalPrice;
@@ -45,8 +62,10 @@ const ingredientsConstructorSlice = createSlice({
 				state.contents.push(addedIngredient);
 				state.totalPrice = calculateTotalPrice(state);
 			},
-			prepare: (ingredient) => ({
+			prepare: (ingredient: content) => ({
 				payload: { ...ingredient, uniqueId: uuidv4() },
+				meta: undefined,
+				error: false,
 			}),
 		},
 

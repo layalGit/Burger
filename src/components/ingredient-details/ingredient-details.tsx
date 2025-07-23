@@ -1,12 +1,11 @@
-import { useSelector } from 'react-redux';
 import cl from './ingredient-details.module.css';
 import { useParams } from 'react-router-dom';
 import { Ingredient } from '@components/burger-ingredients/burger-ingredients.tsx';
+import { useAppSelector } from '@utils/hooks.tsx';
 
 export const IngredientDetails = () => {
 	const { ingredientId } = useParams();
-	const allIngredients = useSelector(
-		//@ts-expect-error 'ignore'
+	const allIngredients = useAppSelector(
 		(store) => store.ingredients.allIngredients
 	);
 	const ingredient = allIngredients.find(

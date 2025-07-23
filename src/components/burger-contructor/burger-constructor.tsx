@@ -6,28 +6,27 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Modal } from '@components/modal/modal.tsx';
 import { useDrop } from 'react-dnd';
-import { useSelector, useDispatch } from 'react-redux';
 import { OrderDetails } from '../order-details/order-details.tsx';
 
 import {
 	addBun,
 	addContent,
-	updateIngredientsOrder, // @ts-expect-error 'ignore'
-} from '../../services/slices/ingredients-constructor-slice.jsx';
+	content,
+	updateIngredientsOrder,
+} from '../../services/slices/ingredients-constructor-slice.tsx';
 import {
 	DraggableItem,
 	TIngredient,
 } from '@components/burger-contructor/draggble-item/draggble-item.tsx';
-// @ts-expect-error 'ignore'
-import { submitOrder } from '@/services/actions/submitActions.jsx';
+import { submitOrder } from '../../services/actions/submitActions.ts';
 import { OnlyAuth } from '@components/protected-route.tsx';
 import { useCallback, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@utils/hooks.tsx';
 
 type moveContent = (dragIndex: number, hoverIndex: number) => void;
 export const BurgerConstructor = () => {
-	const dispatch = useDispatch();
-	const { buns, contents, totalPrice } = useSelector(
-		// @ts-expect-error 'ignore'
+	const dispatch = useAppDispatch();
+	const { buns, contents, totalPrice } = useAppSelector(
 		(state) => state.constructorIngredients
 	);
 
@@ -40,8 +39,9 @@ export const BurgerConstructor = () => {
 
 	const [, dropContentsRef] = useDrop({
 		accept: ['main', 'sauce'],
-		drop: (item) => {
-			dispatch(addContent(item));
+		drop: (item: unknown) => {
+			const typedItem = item as content;
+			dispatch(addContent(typedItem));
 		},
 	});
 

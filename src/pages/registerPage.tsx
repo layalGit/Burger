@@ -7,18 +7,23 @@ import {
 	PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-//@ts-expect-error 'ignore'
-import { register } from '@/services/actions/authorizationActions.jsx';
+import { register } from '../services/actions/authorizationActions.ts';
+import { useAppDispatch } from '@utils/hooks.tsx';
+import { RegisterRequestData } from '@utils/api.ts';
 
 const RegisterPage = () => {
-	const [name, setName] = useState('');
+	const [username, setusername] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const dispatch = useDispatch();
+	const registerData: RegisterRequestData = {
+		username,
+		password,
+		email,
+	};
+	const dispatch = useAppDispatch();
 	const handleClick = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		dispatch(register({ email: email, name: name, password: password }));
+		dispatch(register(registerData));
 	};
 
 	const navigate = useNavigate();
@@ -31,8 +36,8 @@ const RegisterPage = () => {
 			<form onSubmit={handleClick} className={cl.flexForm}>
 				<Input
 					placeholder={'Имя'}
-					value={name}
-					onChange={(e) => setName(e.target.value)}
+					value={username}
+					onChange={(e) => setusername(e.target.value)}
 				/>
 				<EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
 				<PasswordInput

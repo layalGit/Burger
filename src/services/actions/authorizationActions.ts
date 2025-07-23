@@ -1,27 +1,39 @@
 import * as api from '@utils/api.ts';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { setIsAuthChecked, setUser } from '@/services/slices/user-slice.jsx';
+import { setIsAuthChecked, setUser } from '../slices/user-slice.tsx';
+import {
+	ForgotPasswordRequestData,
+	LoginRequestData,
+	RegisterRequestData,
+	ResetPasswordRequestData,
+} from '@utils/api.ts';
 
-export const login = createAsyncThunk('user/login', async (data) => {
-	const res = await api.login(data);
-	return res.user;
-});
-export const register = createAsyncThunk('user/register', async (data) => {
-	const res = await api.register(data);
-	return res.user;
-});
+export const login = createAsyncThunk(
+	'user/login',
+	async (data: LoginRequestData) => {
+		const res = await api.login(data);
+		return res.user;
+	}
+);
+export const register = createAsyncThunk(
+	'user/register',
+	async (data: RegisterRequestData) => {
+		const res = await api.register(data);
+		return res.user;
+	}
+);
 export const forgotPassword = createAsyncThunk(
 	'user/forgotPassword',
-	async (data) => {
+	async (data: ForgotPasswordRequestData) => {
 		const res = await api.forgotPassword(data);
-		return res.user;
+		return res.success;
 	}
 );
 export const resetPassword = createAsyncThunk(
 	'user/resetPassword',
-	async (data) => {
+	async (data: ResetPasswordRequestData) => {
 		const res = await api.resetPassword(data);
-		return res.user;
+		return res.success;
 	}
 );
 export const logout = createAsyncThunk('user/logout', async () => {
