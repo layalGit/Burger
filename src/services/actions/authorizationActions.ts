@@ -42,12 +42,15 @@ export const logout = createAsyncThunk('user/logout', async () => {
 export const checkUserAuth = createAsyncThunk(
 	'user/checkUserAuth',
 	async (_, { dispatch }) => {
-		if (localStorage.getItem('accessToken')) {
-			api
-				.getUser()
-				.then((res) => dispatch(setUser(res)))
-				.finally(() => dispatch(setIsAuthChecked(true)));
-		} else {
+		try {
+			const token = localStorage.getItem('accessToken');
+			if (token) {
+				const res = await api.getUser();
+				dispatch(setUser(res.user));
+			}
+		} catch (error) {
+			console.error('Ошибка проверки авторизации:', error);
+		} finally {
 			dispatch(setIsAuthChecked(true));
 		}
 	}

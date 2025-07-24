@@ -10,11 +10,11 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@utils/hooks.tsx';
 
 const ProfilePage = () => {
+	const dispatch = useAppDispatch();
 	const state = useAppSelector((state) => state.user.user);
 	const [inputValue, setInputValue] = useState(state?.name ?? '');
 	const [email, setEmail] = useState(state?.email ?? '');
-	const [password, setPassword] = useState(state?.password ?? '');
-	const dispatch = useAppDispatch();
+	const [password, setPassword] = useState('');
 	const handleClick = () => {
 		dispatch(logout());
 	};

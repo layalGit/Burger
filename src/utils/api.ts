@@ -36,7 +36,9 @@ type ErrorResponse = {
 	code: number;
 	message: string;
 };
-const checkReponse = (res: Response): Promise<UserResponse | ErrorResponse> =>
+export const checkReponse = (
+	res: Response
+): Promise<UserResponse | ErrorResponse> =>
 	res.ok
 		? res.json()
 		: res.json().then((err: ErrorResponse) => Promise.reject(err));
@@ -50,7 +52,7 @@ const getUser = async (): Promise<UserResponse> => {
 		};
 
 		if (accessToken) {
-			headers.authorization = `Bearer ${accessToken}`;
+			headers.Authorization = `${accessToken}`;
 		}
 
 		const response = await fetchWithRefresh(`${BASE_URL}/auth/user`, {

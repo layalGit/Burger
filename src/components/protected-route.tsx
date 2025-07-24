@@ -1,7 +1,7 @@
 import { getIsAuthChecked, getUser } from '../services/slices/user-slice.tsx';
 import { Navigate, useLocation } from 'react-router-dom';
-import React from 'react';
 import { useAppSelector } from '@utils/hooks.tsx';
+import React from 'react';
 
 type Component = React.JSX.Element;
 
@@ -14,7 +14,6 @@ const Protected = ({ onlyUnAuth = false, component }: ProtectedProps) => {
 	const isAuthChecked = useAppSelector(getIsAuthChecked);
 	const user = useAppSelector(getUser);
 	const location = useLocation();
-
 	if (!isAuthChecked) {
 		return <p>Loading...</p>;
 	}

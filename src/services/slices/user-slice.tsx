@@ -3,7 +3,6 @@ import { login, logout, register } from '../actions/authorizationActions.ts';
 
 type User = {
 	email: string;
-	password: string;
 	name?: string;
 };
 type initialState = {
