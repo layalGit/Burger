@@ -27,15 +27,16 @@ const initialState: ConstructorState = {
 
 const calculateTotalPrice = (state: ConstructorState) => {
 	let totalPrice = 0;
-	if (state.buns) {
-		totalPrice += state.buns.price * state.counts[state.buns._id];
-	}
-	for (const ingredient of state.contents) {
-		totalPrice += ingredient.price * state.counts[ingredient._id];
+	if (state.buns) totalPrice += state.buns.price * 2;
+
+	const uniqueIds = new Set(state.contents.map((item) => item._id));
+	for (const id of uniqueIds) {
+		totalPrice +=
+			state.contents.find((item) => item._id === id)!.price *
+			(state.counts[id] || 0);
 	}
 	return totalPrice;
 };
-
 const ingredientsConstructorSlice = createSlice({
 	name: 'ingredientsConstructor',
 	initialState,
