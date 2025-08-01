@@ -12,11 +12,11 @@ import { useAppDispatch } from '@utils/hooks.tsx';
 import { RegisterRequestData } from '@utils/api.ts';
 
 const RegisterPage = () => {
-	const [username, setusername] = useState('');
+	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const registerData: RegisterRequestData = {
-		username,
+		name,
 		password,
 		email,
 	};
@@ -36,8 +36,8 @@ const RegisterPage = () => {
 			<form onSubmit={handleClick} className={cl.flexForm}>
 				<Input
 					placeholder={'Имя'}
-					value={username}
-					onChange={(e) => setusername(e.target.value)}
+					value={name}
+					onChange={(e) => setName(e.target.value)}
 				/>
 				<EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
 				<PasswordInput

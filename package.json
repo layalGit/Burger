@@ -2,8 +2,11 @@
 	"name": "vite_bundler",
 	"private": true,
 	"version": "0.0.0",
+	"homepage": "https://layalgit.github.io/Burger",
 	"type": "module",
 	"scripts": {
+		"predeploy": "npm run build",
+		"deploy": "gh-pages -d build",
 		"prepare": "husky",
 		"dev": "vite",
 		"build": "tsc && vite build",
@@ -20,6 +23,7 @@
 		"test:ui": "vitest --ui"
 	},
 	"dependencies": {
+		"@4tw/cypress-drag-drop": "^2.3.0",
 		"@babel/runtime": "^7.25.4",
 		"@reduxjs/toolkit": "^2.8.2",
 		"@ya.praktikum/react-developer-burger-ui-components": "1.14.2",

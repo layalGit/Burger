@@ -19,6 +19,7 @@ export const ModalOverlay: FC<ModalOverlayProps> = ({ onClick }) => {
 			tabIndex={0}
 			role='button'
 			onClick={onClick}
-			onKeyDown={handleClose}></div>
+			onKeyDown={handleClose}
+			data-testid='modal-overlay'></div>
 	);
 };

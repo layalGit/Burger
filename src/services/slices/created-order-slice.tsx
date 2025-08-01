@@ -9,7 +9,7 @@ type OrderSliceState = {
 	orderData: Order | null;
 };
 
-const initialState: OrderSliceState = {
+export const initialState: OrderSliceState = {
 	orderNumber: null,
 	isLoading: false,
 	orderData: null,

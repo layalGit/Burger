@@ -16,6 +16,7 @@ export const Modal: FC<ModalProps> = ({ title, children, onClose }) => {
 		setOpen(false);
 		onClose();
 	};
+
 	useEffect(() => {
 		const handleEscapePress = (event: KeyboardEvent) => {
 			if (event.key === 'Escape') {
@@ -36,10 +37,14 @@ export const Modal: FC<ModalProps> = ({ title, children, onClose }) => {
 		? createPortal(
 				<>
 					<ModalOverlay onClick={closeModal} />
-					<div className={cl.modal_content}>
+					<div className={cl.modal_content} data-testid='modal-content'>
 						<div className={`${cl.modal_header} pt-10 pr-10 pl-10`}>
-							<p className='text_type_main-large'>{title}</p>
-							<CloseIcon type='primary' onClick={closeModal} />
+							<p className='text_type_main-large' data-testid='modal-title'>
+								{title}
+							</p>
+							<div data-testid='modal-close-icon'>
+								<CloseIcon type='primary' onClick={closeModal} />
+							</div>
 						</div>
 						<div>{children}</div>
 					</div>

@@ -22,7 +22,7 @@ export type Ingredient = {
 };
 export const BurgerIngredients = () => {
 	const ingredients = useAppSelector(
-		(store) => store.ingredients.allIngredients
+		(store) => store.ingredients.allIngredients || []
 	);
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
 	const filterByType = (ingredients: Ingredient[], type: IngredientType) =>
@@ -120,6 +120,7 @@ export const BurgerIngredients = () => {
 					<ul className={styles.ingredients_list}>
 						{filterByType(ingredients, 'bun').map((item) => (
 							<Link
+								data-testid='ingredientBun'
 								key={item._id}
 								to={`/ingredients/${item._id}`}
 								state={{ background: location }}>
@@ -133,6 +134,7 @@ export const BurgerIngredients = () => {
 					<ul className={styles.ingredients_list}>
 						{filterByType(ingredients, 'sauce').map((item) => (
 							<Link
+								data-testid='ingredientSauce'
 								key={item._id}
 								to={`/ingredients/${item._id}`}
 								state={{ background: location }}>
@@ -146,6 +148,7 @@ export const BurgerIngredients = () => {
 					<ul className={styles.ingredients_list}>
 						{filterByType(ingredients, 'main').map((item) => (
 							<Link
+								data-testid='ingredientMain'
 								key={item._id}
 								to={`/ingredients/${item._id}`}
 								state={{ background: location }}>

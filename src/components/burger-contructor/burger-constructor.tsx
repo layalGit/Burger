@@ -63,7 +63,7 @@ export const BurgerConstructor = () => {
 	return (
 		<section className={`${styles.burger_constructor} mt-25`}>
 			<div className={`${styles.burger_items}  mb-10 pr-1`}>
-				<div ref={dropRef} className='mr-4'>
+				<div ref={dropRef} className='mr-4' data-testid='dndBunTop'>
 					{buns ? (
 						<ConstructorElement
 							text={buns.name}
@@ -81,7 +81,8 @@ export const BurgerConstructor = () => {
 				</div>
 
 				<div
-					className={`${styles.burger_scroll} ${styles.burger_list} custom-scroll pr-2`}>
+					className={`${styles.burger_scroll} ${styles.burger_list} custom-scroll pr-2`}
+					data-testid='dndBunMiddle'>
 					<div
 						ref={dropContentsRef}
 						className={`${styles.bun_middle} text text_type_main-default`}>
@@ -103,7 +104,7 @@ export const BurgerConstructor = () => {
 					</div>
 				</div>
 
-				<div className='mr-4'>
+				<div className='mr-4' data-testid='dndBunBottom'>
 					{buns ? (
 						<ConstructorElement
 							text={buns.name}
