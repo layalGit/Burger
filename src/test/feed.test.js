@@ -1,11 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import feedReducer from '../services/slices/feed-slice';
+import feedReducer, { initialState } from '../services/slices/feed-slice';
 import { receiveFeedMessage } from '../services/actions/feedActions';
 
 describe('feedSlice', () => {
 	it('should handle receiveFeedMessage action', () => {
-		const initialState = { orders: null };
-
 		const testPayload = {
 			success: true,
 			total: 100,

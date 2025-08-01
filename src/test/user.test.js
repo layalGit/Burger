@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import userReducer, {
 	setUser,
 	setIsAuthChecked,
+	initialState,
 } from '../services/slices/user-slice';
 import {
 	login,
@@ -10,11 +11,6 @@ import {
 } from '../services/actions/authorizationActions';
 
 describe('userSlice', () => {
-	const initialState = {
-		user: null,
-		isAuthChecked: false,
-	};
-
 	it('should return initial state', () => {
 		const state = userReducer(undefined, { type: 'unknown' });
 		expect(state).toEqual(initialState);

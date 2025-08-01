@@ -6,7 +6,7 @@ type ProfileOrdersState = {
 	orders: OrdersResponse | null;
 };
 
-const initialState: ProfileOrdersState = {
+export const initialState: ProfileOrdersState = {
 	orders: null,
 };
 

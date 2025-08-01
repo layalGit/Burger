@@ -9,7 +9,7 @@ type initialState = {
 	user: User | null;
 	isAuthChecked: boolean | null;
 };
-const initialState: initialState = {
+export const initialState: initialState = {
 	user: null,
 	isAuthChecked: false,
 };

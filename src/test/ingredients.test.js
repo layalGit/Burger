@@ -1,14 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import ingredientsReducer from '../services/slices/ingredients-slice';
+import ingredientsReducer, {
+	initialState,
+} from '../services/slices/ingredients-slice';
 import { fetchIngredients } from '@/services/actions/ingredientsActions';
 
 describe('ingredientsSlice', () => {
-	const initialState = {
-		allIngredients: [],
-		status: '',
-		error: null,
-	};
-
 	it('should handle initial state', () => {
 		expect(ingredientsReducer(undefined, { type: 'unknown' })).toEqual({
 			allIngredients: [],

@@ -1,12 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import ordersProfileReducer from '../services/slices/orders-profile-slice';
+import ordersProfileReducer, {
+	initialState,
+} from '../services/slices/orders-profile-slice';
 import { receiveOrdersMessage } from '../services/actions/ordersProfileActions';
 
 describe('ordersProfileSlice', () => {
-	const initialState = {
-		orders: null,
-	};
-
 	it('should return initial state', () => {
 		const state = ordersProfileReducer(undefined, { type: 'unknown' });
 		expect(state).toEqual(initialState);

@@ -3,7 +3,6 @@ import {
 	Counter,
 	CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { string, number, func } from 'prop-types';
 import { useDrag } from 'react-dnd';
 import { IngredientType } from '@components/burger-ingredients/burger-ingredients.tsx';
 import { useAppSelector } from '@utils/hooks.tsx';
@@ -52,11 +51,4 @@ export const IngredientItem = ({
 			)}
 		</button>
 	);
-};
-
-IngredientItem.propTypes = {
-	image: string.isRequired,
-	name: string.isRequired,
-	price: number.isRequired,
-	onClick: func.isRequired,
 };

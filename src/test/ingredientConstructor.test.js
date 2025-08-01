@@ -1,18 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import reducer, {
+	initialState,
 	addBun,
 	addContent,
 	removeContent,
 } from '../services/slices/ingredients-constructor-slice';
 
 describe('ingredientsConstructorSlice', () => {
-	const initialState = {
-		buns: null,
-		contents: [],
-		totalPrice: 0,
-		counts: {},
-	};
-
 	it('should handle bun and ingredients correctly', () => {
 		const bun = {
 			_id: 'bun1',

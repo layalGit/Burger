@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import orderReducer, {
+	initialState,
 	setOrderNumber,
 	startLoading,
 	stopLoading,
@@ -7,12 +8,6 @@ import orderReducer, {
 } from '../services/slices/created-order-slice';
 
 describe('orderSlice', () => {
-	const initialState = {
-		orderNumber: null,
-		isLoading: false,
-		orderData: null,
-	};
-
 	const mockOrder = {
 		_id: '1',
 		name: 'Test Order',

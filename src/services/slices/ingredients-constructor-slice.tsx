@@ -18,7 +18,7 @@ type ConstructorState = {
 	totalPrice: number;
 	counts: Counts;
 };
-const initialState: ConstructorState = {
+export const initialState: ConstructorState = {
 	buns: null,
 	contents: [],
 	totalPrice: 0,

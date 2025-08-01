@@ -5,7 +5,7 @@ import { OrdersResponse } from '@/utils/types.ts';
 type FeedState = {
 	orders: OrdersResponse | null;
 };
-const initialState: FeedState = {
+export const initialState: FeedState = {
 	orders: null,
 };
 
